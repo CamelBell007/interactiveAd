@@ -29,4 +29,12 @@ public class InteractiveAd {
     public void init(){
 
     }
+
+    public void showFlatAd(){
+
+    }
+
+    public void hideFloatAd(){
+
+    }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="progress_bar_bg">#80FFFFFF</drawable>
+
+    <declare-styleable name="GifView">
+        <attr name="gif" format="reference" />
+        <attr name="paused" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="TMAwView">
+        <attr name="shape" format="enum">
+            <enum name="square" value="0" />
+            <enum name="circular" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="TMBrTmView">
+        <attr name="TMBr_size" format="enum">
+            <enum name="TMBr" value="0" />
+            <enum name="lander_TMBr" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="TMNaTmView">
+        <attr name="TMNa_size" format="enum">
+            <enum name="TMNa_750_420" value="0" />
+            <enum name="TMNa_750_180" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="TMShTmView">
+        <attr name="countTime" format="integer" />
+    </declare-styleable>
+    <drawable name="default_image_background">#FFE0E0E0</drawable>
+
+    <style name="MyTheme" parent="@android:style/Theme.Light">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+    </style>
+
+    <style name="Widget.GifView" parent="@android:style/Widget" />
+</resources>
