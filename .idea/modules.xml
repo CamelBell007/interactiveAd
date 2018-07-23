@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/InteractiveAd.iml" filepath="$PROJECT_DIR$/InteractiveAd.iml" />
+      <module fileurl="file://D:\AD\h5\interactiveAd\InteractiveAd.iml" filepath="D:\AD\h5\interactiveAd\InteractiveAd.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\AD\h5\interactiveAd\app\app.iml" filepath="D:\AD\h5\interactiveAd\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/interactiveAd.iml" filepath="$PROJECT_DIR$/interactiveAd.iml" />
       <module fileurl="file://$PROJECT_DIR$/suspendinter/suspendinter.iml" filepath="$PROJECT_DIR$/suspendinter/suspendinter.iml" />
+      <module fileurl="file://D:\AD\h5\interactiveAd\suspendinter\suspendinter.iml" filepath="D:\AD\h5\interactiveAd\suspendinter\suspendinter.iml" />
     </modules>
   </component>
 </project>

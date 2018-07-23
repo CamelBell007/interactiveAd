@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.interactive.suspend.ad.InitListener;
+import com.interactive.suspend.ad.InterSDK;
+import com.interactive.suspend.ad.InteractiveAd;
 import com.interactive.suspend.ad.controller.SuspendListener;
 import com.interactive.suspend.ad.view.FloatView;
 
@@ -71,6 +74,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAdExposure() {
                 Log.d(VC_LOG_MAIN, "onAdExposure");
+            }
+        });
+
+//        InteractiveAd.getInstance().init(this,"15630924");
+        InterSDK.init(this, "15630924", new InitListener() {
+            @Override
+            public void onInitSuccess() {
+                String source = InteractiveAd.getInstance().getSourceIdBySlotId("9f734fdj765ed2b");
+                Log.d(VC_LOG_MAIN, "init success: " + source);
+            }
+
+            @Override
+            public void onInitFailed(String errorMessage) {
+                Log.d(VC_LOG_MAIN, "init failed: " + errorMessage);
             }
         });
 

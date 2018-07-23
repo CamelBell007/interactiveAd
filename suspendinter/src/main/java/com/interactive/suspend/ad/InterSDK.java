@@ -1,14 +1,16 @@
 package com.interactive.suspend.ad;
 
+import android.content.Context;
+
 /**
  * Created by Administrator on 2018/6/26.
  */
 
 public class InterSDK {
 
-    public static void init(){
+    public static void init(Context context, String appId, InitListener listener){
         try{
-            InteractiveAd.getInstance().init();
+            InteractiveAd.getInstance().init(context,appId,listener);
         }catch (Throwable throwable){
             throwable.printStackTrace();
         }
