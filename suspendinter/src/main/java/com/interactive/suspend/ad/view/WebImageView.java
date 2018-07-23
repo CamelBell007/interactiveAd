@@ -5,16 +5,16 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import com.interactive.suspend.ad.imageloader.d;
+import com.interactive.suspend.ad.imageloader.LoadImageCallBack;
 import com.interactive.suspend.ad.imageloader.ImageLoadBaseSingle;
-import com.interactive.suspend.ad.imageloader.ImageLoadBaseSingle.LoadImageCallBack;
+
 import java.util.concurrent.Future;
 
-public class WebImageView extends android.support.v7.widget.AppCompatImageView implements LoadImageCallBack {
+public class WebImageView extends android.support.v7.widget.AppCompatImageView implements ImageLoadBaseSingle.LoadImageCallBack {
   private String mURL;
   private Future<Bitmap> mBitmapFuture;
   private Handler mHandler = new Handler();
-  private com.interactive.suspend.ad.imageloader.d mLoadCallback;
+  private LoadImageCallBack mLoadCallback;
   private int mDefaultBackground;
   private  Runnable mRunnable;
 
@@ -43,7 +43,7 @@ public class WebImageView extends android.support.v7.widget.AppCompatImageView i
         if(ImageLoadBaseSingle.getInstance().isBitmapExist(url)) {
           this.setImageBitmap(ImageLoadBaseSingle.getInstance().f(this.mURL));
           if(mLoadCallback != null) {
-            mLoadCallback.a();
+            mLoadCallback.loadImageSuccessed();
           }
         } else {
           this.mBitmapFuture = ImageLoadBaseSingle.getInstance().getFuture(this.getContext(), 0, this.mURL, this);
@@ -55,7 +55,7 @@ public class WebImageView extends android.support.v7.widget.AppCompatImageView i
     }
   }
 
-  public void setLoadCallback(d loadCallBack) {
+  public void setLoadCallback(LoadImageCallBack loadCallBack) {
     mLoadCallback = loadCallBack;
   }
 
@@ -85,7 +85,7 @@ public class WebImageView extends android.support.v7.widget.AppCompatImageView i
         public void run() {
           WebImageView.this.setImageBitmap(var1);
           if(mLoadCallback != null) {
-             mLoadCallback.a();
+             mLoadCallback.loadImageSuccessed();
           }
 
         }
@@ -97,7 +97,7 @@ public class WebImageView extends android.support.v7.widget.AppCompatImageView i
 
   public void loadFailed() {
     if(mLoadCallback!= null) {
-      mLoadCallback.b();
+      mLoadCallback.loadImageFailed();
     }
 
   }

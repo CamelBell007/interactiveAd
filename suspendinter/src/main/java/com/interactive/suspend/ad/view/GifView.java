@@ -19,8 +19,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.interactive.suspend.ad.R;
-import com.interactive.suspend.ad.imageloader.d;
-import com.interactive.suspend.ad.imageloader.ImageLoadBaseSingle.LoadImageCallBack;
+import com.interactive.suspend.ad.imageloader.LoadImageCallBack;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,8 +28,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GifView extends android.support.v7.widget.AppCompatImageView implements LoadImageCallBack {
-    private com.interactive.suspend.ad.imageloader.d a;
+public class GifView extends android.support.v7.widget.AppCompatImageView implements com.interactive.suspend.ad.imageloader.ImageLoadBaseSingle.LoadImageCallBack {
+    private LoadImageCallBack mLoadImageCallBack;
     private int b;
     private Movie c;
     private long d;
@@ -84,8 +83,8 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
         var2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new String[]{var1});
     }
 
-    public void setLoadCallback(d var1) {
-        this.a = var1;
+    public void setLoadCallback(LoadImageCallBack loadImageCallback) {
+        this.mLoadImageCallBack = loadImageCallback;
     }
 
     protected void onMeasure(int var1, int var2) {
@@ -214,15 +213,15 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
 
     @Override
     public void loadSuccessed(Bitmap var1, String var2) {
-        if (var1 != null && !var1.isRecycled() && this.a != null) {
-            this.a.a();
+        if (var1 != null && !var1.isRecycled() && this.mLoadImageCallBack != null) {
+            this.mLoadImageCallBack.loadImageSuccessed();
         }
     }
 
     @Override
     public void loadFailed() {
-        if (this.a != null) {
-            this.a.b();
+        if (this.mLoadImageCallBack != null) {
+            this.mLoadImageCallBack.loadImageFailed();
         }
     }
 
@@ -276,8 +275,8 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
 
         protected void onPostExecute(Object var1) {
             if (var1 instanceof byte[]) {
-                if (GifView.this.a != null) {
-                    GifView.this.a.a();
+                if (GifView.this.mLoadImageCallBack != null) {
+                    GifView.this.mLoadImageCallBack.loadImageSuccessed();
                 }
 
                 byte[] var2 = (byte[]) ((byte[]) var1);

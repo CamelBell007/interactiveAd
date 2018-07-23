@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.interactive.suspend.ad.R;
+import com.interactive.suspend.ad.TargetClassManager;
 import com.interactive.suspend.ad.view.BrowserLayout;
 
 public class TmActivity extends Activity {
@@ -79,15 +80,15 @@ public class TmActivity extends Activity {
         } else {
             this.mBrowserlayout.loadUrl("about:blank");
             this.finish();
-            Class class1 = com.interactive.suspend.ad.b.a(this).a();
-            if(class1 != null) {
+            Class targetActivity = TargetClassManager.getSingleInstance(this).getNeedClass();
+            if(targetActivity != null) {
                 if(mIntent == null) {
-                    Intent var2 = new Intent(this, class1);
+                    Intent var2 = new Intent(this, targetActivity);
                     this.startActivity(var2);
-                    com.interactive.suspend.ad.b.a(this).b();
+                    TargetClassManager.getSingleInstance(this).releaseClass();
                 } else {
                     this.startActivity(mIntent);
-                    com.interactive.suspend.ad.b.a(this).b();
+                    TargetClassManager.getSingleInstance(this).releaseClass();
                 }
             }
         }

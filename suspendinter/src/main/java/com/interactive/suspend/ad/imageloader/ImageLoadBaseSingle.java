@@ -30,7 +30,7 @@ public abstract class ImageLoadBaseSingle {
 
   public static ImageLoadBaseSingle getInstance() {
     if(mInstance == null) {
-      mInstance = new c();
+      mInstance = new InterImageLoad();
     }
 
     return mInstance;

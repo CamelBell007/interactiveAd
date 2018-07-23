@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.interactive.suspend.ad.R;
-import com.interactive.suspend.ad.task.StartHtmlAsyncTask;
+import com.interactive.suspend.ad.taskObject.StartHtmlAsyncTask;
 
 /**
  * Created by Administrator on 2018/6/28.
