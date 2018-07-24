@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.interactive.suspend.ad;
+package com.interactive.suspend.ad.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

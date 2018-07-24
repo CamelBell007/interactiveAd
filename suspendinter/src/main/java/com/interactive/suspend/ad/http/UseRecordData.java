@@ -16,8 +16,8 @@ import android.content.pm.ResolveInfo;
 import android.os.Build.VERSION;
 import android.telephony.TelephonyManager;
 
-import com.interactive.suspend.ad.taskObject.DeviceUtils;
-import com.interactive.suspend.ad.taskObject.PermissionManager;
+import com.interactive.suspend.ad.manager.DeviceUtils;
+import com.interactive.suspend.ad.manager.PermissionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;

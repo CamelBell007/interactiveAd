@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.interactive.suspend.ad.taskObject;
+package com.interactive.suspend.ad.manager;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
@@ -19,7 +19,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.interactive.suspend.ad.CheckCallingPermission;
+import com.interactive.suspend.ad.util.CheckCallingPermission;
 
 import java.io.BufferedReader;
 import java.io.File;

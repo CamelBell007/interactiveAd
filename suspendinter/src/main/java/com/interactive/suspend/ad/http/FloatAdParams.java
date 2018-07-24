@@ -14,10 +14,10 @@ import android.net.Uri;
 import android.net.Uri.Builder;
 import android.text.TextUtils;
 
-import com.interactive.suspend.ad.taskObject.DeviceUtils;
-import com.interactive.suspend.ad.taskObject.DeviceUtil;
-import com.interactive.suspend.ad.taskObject.StringUtils;
-import com.interactive.suspend.ad.taskObject.LocationMananger;
+import com.interactive.suspend.ad.manager.DeviceUtils;
+import com.interactive.suspend.ad.manager.DeviceUtil;
+import com.interactive.suspend.ad.manager.StringUtils;
+import com.interactive.suspend.ad.manager.LocationMananger;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;

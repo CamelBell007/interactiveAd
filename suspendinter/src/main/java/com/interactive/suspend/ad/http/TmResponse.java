@@ -7,7 +7,7 @@ package com.interactive.suspend.ad.http;
 
 import android.text.TextUtils;
 
-import com.interactive.suspend.ad.taskObject.ThreadStackLog;
+import com.interactive.suspend.ad.manager.ThreadStackLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;

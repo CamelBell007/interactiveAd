@@ -12,20 +12,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.interactive.suspend.ad.R;
-import com.interactive.suspend.ad.RequestInterface;
+import com.interactive.suspend.ad.util.RequestInterface;
 import com.interactive.suspend.ad.activity.TmActivity;
 import com.interactive.suspend.ad.controller.SuspendController;
 import com.interactive.suspend.ad.controller.SuspendListener;
-import com.interactive.suspend.ad.FloatAdRequestAction;
-import com.interactive.suspend.ad.AdServiceUrlRequestAction;
+import com.interactive.suspend.ad.task.FloatAdRequestAction;
+import com.interactive.suspend.ad.task.AdServiceUrlRequestAction;
 import com.interactive.suspend.ad.http.AdInfo;
 import com.interactive.suspend.ad.http.BaseResponse;
 import com.interactive.suspend.ad.http.FloatAdParams;
 import com.interactive.suspend.ad.http.TmResponse;
 import com.interactive.suspend.ad.imageloader.LoadImageCallBack;
-import com.interactive.suspend.ad.LoadAdCallback;
-import com.interactive.suspend.ad.taskObject.StringUtils;
-import com.interactive.suspend.ad.taskObject.ThreadStackLog;
+import com.interactive.suspend.ad.util.LoadAdCallback;
+import com.interactive.suspend.ad.manager.StringUtils;
+import com.interactive.suspend.ad.manager.ThreadStackLog;
 
 /**
  * Created by VC on 2018/6/28.

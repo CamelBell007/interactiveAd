@@ -9,6 +9,7 @@ import com.interactive.suspend.ad.net.ApxConfigRequestManager;
 import com.interactive.suspend.ad.net.RequestApxConfigListener;
 import com.interactive.suspend.ad.net.RequestDopConfigListener;
 import com.interactive.suspend.ad.net.RequestManager;
+import com.interactive.suspend.ad.util.InitListener;
 
 import java.util.HashMap;
 import java.util.List;

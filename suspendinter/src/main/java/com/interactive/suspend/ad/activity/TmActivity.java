@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.interactive.suspend.ad.R;
-import com.interactive.suspend.ad.TargetClassManager;
+import com.interactive.suspend.ad.util.TargetClassManager;
 import com.interactive.suspend.ad.view.BrowserLayout;
 
 public class TmActivity extends Activity {

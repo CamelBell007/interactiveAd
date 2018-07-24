@@ -3,20 +3,21 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.interactive.suspend.ad;
+package com.interactive.suspend.ad.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.interactive.suspend.ad.util.LoadAdCallback;
 import com.interactive.suspend.ad.http.AdInfo;
 import com.interactive.suspend.ad.http.BaseResponse;
 import com.interactive.suspend.ad.http.ErrorReportData;
 import com.interactive.suspend.ad.http.InterException;
-import com.interactive.suspend.ad.taskObject.FileUtils;
-import com.interactive.suspend.ad.taskObject.SharedPreferenceUtil;
-import com.interactive.suspend.ad.taskObject.StringUtils;
-import com.interactive.suspend.ad.taskObject.ThreadStackLog;
+import com.interactive.suspend.ad.manager.FileUtils;
+import com.interactive.suspend.ad.manager.SharedPreferenceUtil;
+import com.interactive.suspend.ad.manager.StringUtils;
+import com.interactive.suspend.ad.manager.ThreadStackLog;
 
 public class AdServiceUrlRequestAction {
     private AdInfo a;

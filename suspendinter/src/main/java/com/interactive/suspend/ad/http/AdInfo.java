@@ -15,12 +15,12 @@ import android.net.Uri.Builder;
 import android.text.TextUtils;
 
 import com.interactive.suspend.ad.db.InterAdAgent;
-import com.interactive.suspend.ad.taskObject.AppVersion;
-import com.interactive.suspend.ad.taskObject.DeviceUtils;
-import com.interactive.suspend.ad.taskObject.FileUtils;
-import com.interactive.suspend.ad.taskObject.LocationMananger;
-import com.interactive.suspend.ad.taskObject.StringUtils;
-import com.interactive.suspend.ad.taskObject.DeviceUtil;
+import com.interactive.suspend.ad.manager.AppVersion;
+import com.interactive.suspend.ad.manager.DeviceUtils;
+import com.interactive.suspend.ad.manager.FileUtils;
+import com.interactive.suspend.ad.manager.LocationMananger;
+import com.interactive.suspend.ad.manager.StringUtils;
+import com.interactive.suspend.ad.manager.DeviceUtil;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;

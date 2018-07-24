@@ -1,4 +1,4 @@
-package com.interactive.suspend.ad;
+package com.interactive.suspend.ad.util;
 
 import android.content.Context;
 

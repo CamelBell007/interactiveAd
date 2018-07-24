@@ -2,6 +2,8 @@ package com.interactive.suspend.ad;
 
 import android.content.Context;
 
+import com.interactive.suspend.ad.util.InitListener;
+
 /**
  * Created by Administrator on 2018/6/26.
  */

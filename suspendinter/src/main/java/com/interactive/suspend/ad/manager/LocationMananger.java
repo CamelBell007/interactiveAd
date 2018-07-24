@@ -3,14 +3,14 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.interactive.suspend.ad.taskObject;
+package com.interactive.suspend.ad.manager;
 
 import android.Manifest;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.interactive.suspend.ad.CheckCallingPermission;
+import com.interactive.suspend.ad.util.CheckCallingPermission;
 
 import java.util.Iterator;
 import java.util.List;

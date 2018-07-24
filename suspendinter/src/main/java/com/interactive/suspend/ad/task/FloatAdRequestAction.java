@@ -3,31 +3,32 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.interactive.suspend.ad;
+package com.interactive.suspend.ad.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.text.TextUtils;
 
+import com.interactive.suspend.ad.util.RequestInterface;
 import com.interactive.suspend.ad.http.BaseResponse;
 import com.interactive.suspend.ad.http.FloatAdParams;
 import com.interactive.suspend.ad.http.TmResponse;
-import com.interactive.suspend.ad.taskObject.SharedPreferenceUtil;
-import com.interactive.suspend.ad.taskObject.ThreadStackLog;
+import com.interactive.suspend.ad.manager.SharedPreferenceUtil;
+import com.interactive.suspend.ad.manager.ThreadStackLog;
 
 public class FloatAdRequestAction {
     private FloatAdParams mFloatAdParams;
     private RequestInterface mRequestInterface;
     private FloatAdAsyncTask mFloatAdAsyncTask;
     private BaseResponse.loadFinish mLoadFinishInterface;
-    private com.interactive.suspend.ad.taskObject.a e;
+    private com.interactive.suspend.ad.manager.a e;
     private Context mContext;
 
     public FloatAdRequestAction(BaseResponse.loadFinish var1, RequestInterface var2, Context var3) {
         this.mRequestInterface = var2;
         this.mLoadFinishInterface = var1;
-        this.e = com.interactive.suspend.ad.taskObject.a.a(var3);
+        this.e = com.interactive.suspend.ad.manager.a.a(var3);
         this.mContext = var3;
     }
 

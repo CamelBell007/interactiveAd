@@ -1,4 +1,4 @@
-package com.interactive.suspend.ad;
+package com.interactive.suspend.ad.util;
 
 /**
  * Created by drason on 2018/7/23.

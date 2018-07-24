@@ -1,4 +1,4 @@
-package com.interactive.suspend.ad;
+package com.interactive.suspend.ad.util;
 
 public abstract interface LoadAdCallback
 {

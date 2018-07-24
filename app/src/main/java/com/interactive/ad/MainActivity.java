@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.interactive.suspend.ad.InitListener;
+import com.interactive.suspend.ad.util.InitListener;
 import com.interactive.suspend.ad.InterSDK;
 import com.interactive.suspend.ad.InteractiveAd;
 import com.interactive.suspend.ad.controller.SuspendListener;

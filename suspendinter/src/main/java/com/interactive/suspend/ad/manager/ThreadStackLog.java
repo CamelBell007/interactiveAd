@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.interactive.suspend.ad.taskObject;
+package com.interactive.suspend.ad.manager;
 
 import android.util.Log;
 import java.util.Hashtable;
