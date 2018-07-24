@@ -19,6 +19,22 @@ import java.util.Map.Entry;
 import java.util.zip.GZIPOutputStream;
 
 public class StringUtils {
+
+    /**
+     * judge string is empty.
+     * @param string
+     * @return
+     */
+    public static boolean isEmpty(String string){
+        if(string == null){
+            return true;
+        }
+        if(string.trim().length() == 0){
+            return true;
+        }
+        return false;
+    }
+
     public static String a() {
         Random var0 = new Random();
         String var1 = var0.nextInt(10000) + "";

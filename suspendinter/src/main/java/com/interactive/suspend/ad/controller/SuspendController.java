@@ -9,5 +9,5 @@ public interface SuspendController {
 
     void setAdListener(SuspendListener var1);
 
-    void loadAd(int var1);
+    void loadAd(String var1);
 }

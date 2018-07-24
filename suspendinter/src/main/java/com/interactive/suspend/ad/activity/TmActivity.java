@@ -22,7 +22,7 @@ public class TmActivity extends Activity {
     private String mBundleKeyURL = null;
     private boolean mBundleKeyShowButtonBar = true;
     private static Intent mIntent;
-    private BrowserLayout mBrowserlayout;
+    private BrowserLayout mBrowserLayout;
 
     public TmActivity() {
     }
@@ -33,18 +33,18 @@ public class TmActivity extends Activity {
         Intent intent = this.getIntent();
         this.mBundleKeyURL = intent.getExtras().getString("BUNDLE_KEY_URL");
         this.mBundleKeyShowButtonBar = intent.getExtras().getBoolean("BUNDLE_KEY_SHOW_BOTTOM_BAR");
-        this.mBrowserlayout = (BrowserLayout)this.findViewById(R.id.tm_common_web_browser_layout);
+        this.mBrowserLayout = (BrowserLayout)this.findViewById(R.id.tm_common_web_browser_layout);
         if(!TextUtils.isEmpty(this.mBundleKeyURL)) {
-            this.mBrowserlayout.loadUrl(this.mBundleKeyURL);
+            this.mBrowserLayout.loadUrl(this.mBundleKeyURL);
         }
 
         if(!this.mBundleKeyShowButtonBar) {
-            this.mBrowserlayout.gone();
+            this.mBrowserLayout.gone();
         } else {
-            this.mBrowserlayout.visible();
+            this.mBrowserLayout.visible();
         }
 
-        this.mBrowserlayout.setOnBackClickListener(new OnClickListener() {
+        this.mBrowserLayout.setOnBackClickListener(new OnClickListener() {
             public void onClick(View view) {
                 TmActivity.this.loadMoreSource();
             }
@@ -75,10 +75,10 @@ public class TmActivity extends Activity {
     }
 
     private void loadMoreSource() {
-        if(this.mBrowserlayout.canGoBack()) {
-            this.mBrowserlayout.goback();
+        if(this.mBrowserLayout.canGoBack()) {
+            this.mBrowserLayout.goback();
         } else {
-            this.mBrowserlayout.loadUrl("about:blank");
+            this.mBrowserLayout.loadUrl("about:blank");
             this.finish();
             Class targetActivity = TargetClassManager.getSingleInstance(this).getNeedClass();
             if(targetActivity != null) {

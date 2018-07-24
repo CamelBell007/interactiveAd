@@ -26,22 +26,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        InteractiveAd.getInstance().init();
 
-//        try {
-//            Log.d("VC-String_DEX",new String(CLASSES_DEX, "utf-8")+"db_fm.jar");
-//            Log.d("VC-String_NAME",new String(CLASS_NAME, "utf-8")+"cn.tongdun.android.core.db.FMCore");
-//
-//
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+
         mLoadingButton = (Button) findViewById(R.id.main_load_button);
         mFloatView = (FloatView) findViewById(R.id.float_view);
         mLoadingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFloatView.loadAd(FLOAT_SLOT_ID);
+                mFloatView.loadAd(String.valueOf(FLOAT_SLOT_ID));
             }
         });
 

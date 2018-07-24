@@ -6,6 +6,7 @@ package com.interactive.suspend.ad.constant;
 
 public final class AdConstants {
 
+    public static final String CONFIG_DEMION = "http://c.open.dotcunitedgroup.com";
     public static final String DRIVER_LINE = "/cr/config?pubid=";
 
     public static final String PREF_NAME = "ad_pref";

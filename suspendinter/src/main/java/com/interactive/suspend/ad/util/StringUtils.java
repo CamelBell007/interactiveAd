@@ -6,18 +6,5 @@ package com.interactive.suspend.ad.util;
 
 public class StringUtils {
 
-    /**
-     * judge string is empty.
-     * @param string
-     * @return
-     */
-    public static boolean isEmpty(String string){
-        if(string == null){
-            return true;
-        }
-        if(string.trim().length() == 0){
-            return true;
-        }
-        return false;
-    }
+
 }

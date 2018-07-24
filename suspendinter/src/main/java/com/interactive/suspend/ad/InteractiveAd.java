@@ -3,6 +3,7 @@ package com.interactive.suspend.ad;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.interactive.suspend.ad.constant.AdConstants;
 import com.interactive.suspend.ad.model.AdConfigBean;
 import com.interactive.suspend.ad.model.ApxAdConfigBean;
 import com.interactive.suspend.ad.net.ApxConfigRequestManager;
@@ -14,21 +15,17 @@ import com.interactive.suspend.ad.util.InitListener;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.interactive.suspend.ad.constant.AdConstants.DRIVER_LINE;
-
 /**
  * Created by VC on 2018/6/26.
  */
 
 public class InteractiveAd {
+    private static final String TAG = "InteractiveAd";
+    public static volatile InteractiveAd INTERACTIVE_AD;
 
     private Context mContext;
     private InitListener mInitListener;
-
-    private static final String TAG = "InteractiveAd";
-
-    public static volatile InteractiveAd INTERACTIVE_AD;
-    private HashMap<String,String> slotSourceIdMap;
+    private HashMap<String, String> slotSourceIdMap;
     private String errorMsg = "init failed!";
 
     private InteractiveAd() {
@@ -49,18 +46,21 @@ public class InteractiveAd {
      * init interactive ad sdk
      * get ad configuration and do some init
      */
-    public void init(final Context context, String appId, InitListener listener){
-        if (context == null || context.getApplicationContext() == null)
+    public void init(final Context context, String appId, InitListener listener) {
+        if (context == null || context.getApplicationContext() == null){
             throw new IllegalArgumentException("context argument illegal");
-        if (TextUtils.isEmpty(appId)) throw new IllegalArgumentException("appid is not valid");
+        }
+        if (TextUtils.isEmpty(appId)){
+            throw new IllegalArgumentException("appid is not valid");
+        }
         mContext = context.getApplicationContext();
         mInitListener = listener;
-        final String url = "http://c.open.dotcunitedgroup.com" + DRIVER_LINE + appId;
+        final String url = AdConstants.CONFIG_DEMION + AdConstants.DRIVER_LINE + appId;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                loadConfig(mContext,url);
+                loadConfig(mContext, url);
             }
         }).start();
 
@@ -129,7 +129,7 @@ public class InteractiveAd {
                     ApxAdConfigBean.DataBean.AdUnitsBean.NativesBean.AdNetworksBean adNetworksBean = nativesBean.getAd_networks().get(0);
                     if (adNetworksBean != null) {
                         String key = adNetworksBean.getKey();
-                        if (!TextUtils.isEmpty(key)) slotSourceIdMap.put(unitId,key);
+                        if (!TextUtils.isEmpty(key)) slotSourceIdMap.put(unitId, key);
                     }
                 }
             }
@@ -146,11 +146,11 @@ public class InteractiveAd {
         return "";
     }
 
-    public void showFlatAd(){
+    public void showFlatAd() {
 
     }
 
-    public void hideFloatAd(){
+    public void hideFloatAd() {
 
     }
 }

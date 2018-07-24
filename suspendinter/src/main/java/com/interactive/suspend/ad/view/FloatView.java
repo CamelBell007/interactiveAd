@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.interactive.suspend.ad.InteractiveAd;
 import com.interactive.suspend.ad.R;
 import com.interactive.suspend.ad.util.RequestInterface;
 import com.interactive.suspend.ad.activity.TmActivity;
@@ -175,8 +176,12 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
         this.setVisibility(View.GONE);
     }
 
-    public void loadAd(int slotId) {
+    public void loadAd(String slotId) {
         if (this.mAdInterInfo == null) {
+//            if(StringUtils.isEmpty(slotId)){
+//                return;
+//            }
+//            String slotKey = getSlotKeyByName(slotId);
             this.mAdInterInfo = (new FloatAdParams.a(this.mContext)).a(slotId).a();
         }
 
@@ -230,63 +235,8 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
     }
 
 
-    public void loadAd(String  slotName) {
-        if (this.mAdInterInfo == null) {
-            int slotKey = getSlotKeyByName(slotName);
-            this.mAdInterInfo = (new FloatAdParams.a(this.mContext)).a(slotKey).a();
-        }
-
-        if (!TextUtils.isEmpty(this.mAdInterInfo.b()) && !TextUtils.isEmpty(this.mAdInterInfo.a())) {
-            this.mFloatAdManager = new FloatAdRequestAction(new TmResponse.a(), new RequestInterface() {
-                public void requestSuccess(BaseResponse var1) {
-                    if (var1 instanceof TmResponse) {
-                        mAdInfo = (TmResponse) var1;
-                        String var2 = mAdInfo.getImg_url();
-                        if (!TextUtils.isEmpty(var2)) {
-                            if (var2.endsWith(".gif")) {
-                                mWebImageView.setVisibility(View.GONE);
-                                mGifView.setVisibility(View.VISIBLE);
-                                mGifView.setGifUrl(StringUtils.a(var2));
-                            } else {
-                                mWebImageView.loadSource(StringUtils.a(var2), R.drawable.default_image_background);
-                            }
-                        }
-
-                        if (mAdInfo.isAd_close_visible()) {
-                            mCloseImage.setVisibility(View.VISIBLE);
-                        } else {
-                            mCloseImage.setVisibility(View.GONE);
-                        }
-
-                        if (mAdInfo.isAd_icon_visible()) {
-                            mAdImage.setVisibility(View.VISIBLE);
-                        } else {
-                            mAdImage.setVisibility(View.GONE);
-                        }
-                    }
-
-                }
-
-                public void requestFail(String var1) {
-                    ThreadStackLog.a().a(var1);
-                    if (mSuspendListener != null) {
-                        mSuspendListener.onFailedToReceiveAd();
-                    }
-
-                }
-
-                public void preExecute() {
-                    setVisibility(View.GONE);
-                }
-            }, this.mContext);
-            this.mFloatAdManager.requestAdInfo(this.mAdInterInfo);
-        } else {
-            throw new IllegalStateException("app_key or adslot_id not set");
-        }
-    }
-
-    private int getSlotKeyByName(String slotName){
-        int slotKey = 0;
+    private String getSlotKeyByName(String slotName){
+        String slotKey = InteractiveAd.getInstance().getSourceIdBySlotId(slotName);
         return slotKey;
     }
 

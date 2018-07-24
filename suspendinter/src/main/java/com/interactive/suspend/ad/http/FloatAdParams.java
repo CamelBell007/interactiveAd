@@ -130,7 +130,7 @@ public class FloatAdParams extends LocationMananger {
         private DeviceUtil j;
         private LocationMananger k;
 
-        public FloatAdParams.a a(int slotKey) {
+        public FloatAdParams.a a(String slotKey) {
             this.mSlotKey = String.valueOf(slotKey);
             this.a = this.mDeviceUtil.a() + this.mSlotKey + System.currentTimeMillis() + k.a();
             return this;
