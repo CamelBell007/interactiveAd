@@ -79,11 +79,11 @@ public class WebImageView extends android.support.v7.widget.AppCompatImageView i
 
   }
 
-  public void loadSuccessed(final Bitmap var1, String var2) {
-    if(var2.equals(this.mURL) && var1 != null && !var1.isRecycled()) {
+  public void loadSuccessed(final Bitmap bitmap, String url) {
+    if(url.equals(this.mURL) && bitmap != null && !bitmap.isRecycled()) {
       this.mHandler.post(this.mRunnable = new Runnable() {
         public void run() {
-          WebImageView.this.setImageBitmap(var1);
+          WebImageView.this.setImageBitmap(bitmap);
           if(mLoadCallback != null) {
              mLoadCallback.loadImageSuccessed();
           }

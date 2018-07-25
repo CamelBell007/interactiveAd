@@ -38,7 +38,7 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
     private ImageView mCloseImage;
     private ImageView mAdImage;
     private FloatAdRequestAction mFloatAdManager;
-    private AdServiceUrlRequestAction f;
+    private AdServiceUrlRequestAction mAdServiceUrlRequestAction;
     private FloatAdParams mAdInterInfo;
     private TmResponse mAdInfo;
     private int mAdViewShapeStyle;
@@ -49,7 +49,7 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
     private String mAdInfoActivityId;
     private String mAdInfoSlotId;
     private Context mContext;
-    private boolean q;
+    private boolean mIsDoUrlRequest;
     private SuspendListener mSuspendListener;
 
     public FloatView(Context context, AttributeSet attributeSet) {
@@ -58,7 +58,7 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
 
     public FloatView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
-        this.q = false;
+        this.mIsDoUrlRequest = false;
         this.mContext = context.getApplicationContext();
         this.initAttribute(context, attributeSet, defStyleAttr);
         this.initView(context);
@@ -256,9 +256,9 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
             this.mFloatAdManager = null;
         }
 
-        if (this.f != null) {
-            this.f.a();
-            this.f = null;
+        if (this.mAdServiceUrlRequestAction != null) {
+            this.mAdServiceUrlRequestAction.a();
+            this.mAdServiceUrlRequestAction = null;
         }
 
         this.mAdInterInfo = null;
@@ -278,9 +278,9 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
             }
 
             TmActivity.jumptoShowActivity(this.getContext(), StringUtils.a(this.mAdInfo.getClick_url()));
-            if (!this.q) {
+            if (!this.mIsDoUrlRequest) {
                 this.adServerUrlRequest(1);
-                this.q = true;
+                this.mIsDoUrlRequest = true;
             }
         }
 
@@ -292,8 +292,8 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
                         .d(this.mAdInfoDataOne).e(this.mAdInfoDataTwo).a(this.mAdInfoSlotId)
                         .f(this.mAdInfoClickUrl).g(this.mAdInfoActivityId).c(this.mAdInfoRequestIdCurrentTime)
                         .a();
-        if (this.f == null) {
-            this.f = new AdServiceUrlRequestAction(new TmResponse.a(), new LoadAdCallback() {
+        if (this.mAdServiceUrlRequestAction == null) {
+            this.mAdServiceUrlRequestAction = new AdServiceUrlRequestAction(new TmResponse.a(), new LoadAdCallback() {
                 public void loadSuccess() {
                 }
 
@@ -302,7 +302,7 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
             }, this.mContext);
         }
 
-        this.f.a(var2);
+        this.mAdServiceUrlRequestAction.a(var2);
     }
 }
 

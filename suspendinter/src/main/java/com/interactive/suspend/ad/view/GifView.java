@@ -30,57 +30,57 @@ import java.net.URL;
 
 public class GifView extends android.support.v7.widget.AppCompatImageView implements com.interactive.suspend.ad.imageloader.ImageLoadBaseSingle.LoadImageCallBack {
     private LoadImageCallBack mLoadImageCallBack;
-    private int b;
-    private Movie c;
-    private long d;
-    private int e;
-    private float f;
-    private float g;
-    private float h;
-    private int i;
-    private int j;
-    private volatile boolean k;
-    private boolean l;
+    private int mGifViewResource;
+    private volatile boolean mGifViewPause;
+    private Movie mMovie;
+    private long mRecordTime;
+    private int mRelativeTime;
+    private float mXLocation;
+    private float mYLocation;
+    private float mSimple;
+    private int mWidth;
+    private int mHeight;
+    private boolean mIsVisible;
 
-    public GifView(Context var1) {
-        this(var1, (AttributeSet) null);
+    public GifView(Context context) {
+        this(context, (AttributeSet) null);
     }
 
-    public GifView(Context var1, AttributeSet var2) {
-        this(var1, var2, R.styleable.GifView_gif);
+    public GifView(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, R.styleable.GifView_gif);
     }
 
-    public GifView(Context var1, AttributeSet var2, int var3) {
-        super(var1, var2, var3);
-        this.l = true;
-        this.a(var1, var2, var3);
+    public GifView(Context context, AttributeSet attributeSet, int defAttr) {
+        super(context, attributeSet, defAttr);
+        this.mIsVisible = true;
+        this.init(context, attributeSet, defAttr);
     }
 
     @SuppressLint({"NewApi"})
-    private void a(Context var1, AttributeSet var2, int var3) {
+    private void init(Context context, AttributeSet attributeSet, int defStyleAttr) {
         if (VERSION.SDK_INT >= 11) {
             this.setLayerType(1, (Paint) null);
         }
 
-        TypedArray var4 = var1.obtainStyledAttributes(var2, R.styleable.GifView, var3, R.style.Widget_GifView);
-        this.b = var4.getResourceId(R.styleable.GifView_gif, -1);
-        this.k = var4.getBoolean(R.styleable.GifView_paused, false);
-        var4.recycle();
-        if (this.b != -1) {
-            this.c = Movie.decodeStream(this.getResources().openRawResource(this.b));
+        TypedArray typeArray = context.obtainStyledAttributes(attributeSet, R.styleable.GifView, defStyleAttr, R.style.Widget_GifView);
+        this.mGifViewResource = typeArray.getResourceId(R.styleable.GifView_gif, -1);
+        this.mGifViewPause = typeArray.getBoolean(R.styleable.GifView_paused, false);
+        typeArray.recycle();
+        if (this.mGifViewResource != -1) {
+            this.mMovie = Movie.decodeStream(this.getResources().openRawResource(this.mGifViewResource));
         }
 
     }
 
-    public void setGifResource(int var1) {
-        this.b = var1;
-        this.c = Movie.decodeStream(this.getResources().openRawResource(this.b));
+    public void setGifResource(int viewResource) {
+        this.mGifViewResource = viewResource;
+        this.mMovie = Movie.decodeStream(this.getResources().openRawResource(this.mGifViewResource));
         this.requestLayout();
     }
 
-    public void setGifUrl(String var1) {
-        GifView.a var2 = new GifView.a();
-        var2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new String[]{var1});
+    public void setGifUrl(String gifUrl) {
+        RequestGifUrlAndShowAsyncTask var2 = new RequestGifUrlAndShowAsyncTask();
+        var2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new String[]{gifUrl});
     }
 
     public void setLoadCallback(LoadImageCallBack loadImageCallback) {
@@ -88,9 +88,9 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
     }
 
     protected void onMeasure(int var1, int var2) {
-        if (this.c != null) {
-            int var3 = this.c.width();
-            int var4 = this.c.height();
+        if (this.mMovie != null) {
+            int var3 = this.mMovie.width();
+            int var4 = this.mMovie.height();
             float var5 = 1.0F;
             float var6 = 1.0F;
             int var7 = MeasureSpec.getMode(var1);
@@ -106,10 +106,10 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
                 var5 = (float) var4 / (float) var9;
             }
 
-            this.h = 1.0F / Math.min(var6, var5);
-            this.i = (int) ((float) var3 * this.h);
-            this.j = (int) ((float) var4 * this.h);
-            this.setMeasuredDimension(this.i, this.j);
+            this.mSimple = 1.0F / Math.min(var6, var5);
+            this.mWidth = (int) ((float) var3 * this.mSimple);
+            this.mHeight = (int) ((float) var4 * this.mSimple);
+            this.setMeasuredDimension(this.mWidth, this.mHeight);
         } else {
             super.onMeasure(var1, var2);
         }
@@ -118,20 +118,20 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
 
     protected void onLayout(boolean var1, int var2, int var3, int var4, int var5) {
         super.onLayout(var1, var2, var3, var4, var5);
-        if (this.c != null) {
-            this.f = (float) (this.getWidth() - this.i) / 2.0F;
-            this.g = (float) (this.getHeight() - this.j) / 2.0F;
-            this.l = this.getVisibility() == View.VISIBLE;
+        if (this.mMovie != null) {
+            this.mXLocation = (float) (this.getWidth() - this.mWidth) / 2.0F;
+            this.mYLocation = (float) (this.getHeight() - this.mHeight) / 2.0F;
+            this.mIsVisible = this.getVisibility() == View.VISIBLE;
         }
 
     }
 
     protected void onDraw(Canvas var1) {
-        if (this.c != null) {
-            if (!this.k) {
-                this.c();
+        if (this.mMovie != null) {
+            if (!this.mGifViewPause) {
+                this.getRelativeTime();
                 this.a(var1);
-                this.b();
+                this.refresh();
             } else {
                 this.a(var1);
             }
@@ -142,8 +142,8 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
     }
 
     @SuppressLint({"NewApi"})
-    private void b() {
-        if (this.l) {
+    private void refresh() {
+        if (this.mIsVisible) {
             if (VERSION.SDK_INT >= 16) {
                 this.postInvalidateOnAnimation();
             } else {
@@ -153,49 +153,49 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
 
     }
 
-    private void c() {
-        long var1 = SystemClock.uptimeMillis();
-        if (this.d == 0L) {
-            this.d = var1;
+    private void getRelativeTime() {
+        long noSleepTime = SystemClock.uptimeMillis();
+        if (this.mRecordTime == 0L) {
+            this.mRecordTime = noSleepTime;
         }
 
-        int var3 = this.c.duration();
-        if (var3 == 0) {
-            var3 = 1000;
+        int movieDuration = this.mMovie.duration();
+        if (movieDuration == 0) {
+            movieDuration = 1000;
         }
 
-        this.e = (int) ((var1 - this.d) % (long) var3);
+        this.mRelativeTime = (int) ((noSleepTime - this.mRecordTime) % (long) movieDuration);
     }
 
     private void a(Canvas var1) {
-        this.c.setTime(this.e);
+        this.mMovie.setTime(this.mRelativeTime);
         var1.save(Canvas.FULL_COLOR_LAYER_SAVE_FLAG);
-        var1.scale(this.h, this.h);
-        this.c.draw(var1, this.f / this.h, this.g / this.h);
+        var1.scale(this.mSimple, this.mSimple);
+        this.mMovie.draw(var1, this.mXLocation / this.mSimple, this.mYLocation / this.mSimple);
         var1.restore();
     }
 
     @SuppressLint({"NewApi"})
     public void onScreenStateChanged(int var1) {
         super.onScreenStateChanged(var1);
-        this.l = var1 == 1;
-        this.b();
+        this.mIsVisible = var1 == 1;
+        this.refresh();
     }
 
     @SuppressLint({"NewApi"})
     protected void onVisibilityChanged(View var1, int var2) {
         super.onVisibilityChanged(var1, var2);
-        this.l = var2 == View.VISIBLE;
-        this.b();
+        this.mIsVisible = var2 == View.VISIBLE;
+        this.refresh();
     }
 
     protected void onWindowVisibilityChanged(int var1) {
         super.onWindowVisibilityChanged(var1);
-        this.l = var1 == View.VISIBLE;
-        this.b();
+        this.mIsVisible = var1 == View.VISIBLE;
+        this.refresh();
     }
 
-    private static byte[] b(InputStream var0) {
+    private static byte[] refresh(InputStream var0) {
         ByteArrayOutputStream var1 = new ByteArrayOutputStream(1024);
         byte[] var2 = new byte[1024];
 
@@ -212,8 +212,8 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
     }
 
     @Override
-    public void loadSuccessed(Bitmap var1, String var2) {
-        if (var1 != null && !var1.isRecycled() && this.mLoadImageCallBack != null) {
+    public void loadSuccessed(Bitmap bitmap, String url) {
+        if (bitmap != null && !bitmap.isRecycled() && this.mLoadImageCallBack != null) {
             this.mLoadImageCallBack.loadImageSuccessed();
         }
     }
@@ -225,63 +225,63 @@ public class GifView extends android.support.v7.widget.AppCompatImageView implem
         }
     }
 
-    public class a extends AsyncTask<String, Void, Object> {
-        public a() {
+    public class RequestGifUrlAndShowAsyncTask extends AsyncTask<String, Void, Object> {
+        public RequestGifUrlAndShowAsyncTask() {
         }
 
         @Override
         protected Object doInBackground(String... params) {
-            InputStream var2 = null;
-            Object var3 = null;
-            HttpURLConnection var4 = null;
+            InputStream inputStream = null;
+            Object object = null;
+            HttpURLConnection httpURLConnection = null;
 
-            byte[] var8;
+            byte[] arrayByte;
             try {
-                String var6;
+                String message;
                 try {
-                    URL var5 = new URL(params[0]);
-                    var4 = (HttpURLConnection) var5.openConnection();
-                    var4.connect();
-                    if (var4.getResponseCode() != 200) {
-                        var6 = "Server returned HTTP " + var4.getResponseCode() + " " + var4.getResponseMessage();
-                        return var6;
+                    URL url = new URL(params[0]);
+                    httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.connect();
+                    if (httpURLConnection.getResponseCode() != 200) {
+                        message = "Server returned HTTP " + httpURLConnection.getResponseCode() + " " + httpURLConnection.getResponseMessage();
+                        return message;
                     }
 
-                    int var14 = var4.getContentLength();
-                    var2 = var4.getInputStream();
-                    byte[] var7 = GifView.b(var2);
-                    if (var3 != null) {
-                        ((OutputStream) var3).close();
+                    int contentLength = httpURLConnection.getContentLength();
+                    inputStream = httpURLConnection.getInputStream();
+                    byte[] gifByte = GifView.refresh(inputStream);
+                    if (object != null) {
+                        ((OutputStream) object).close();
                     }
 
-                    if (var2 != null) {
-                        var2.close();
+                    if (inputStream != null) {
+                        inputStream.close();
                     }
 
-                    var8 = var7;
+                    arrayByte = gifByte;
                 } catch (Exception var12) {
-                    var6 = var12.toString();
-                    return var6;
+                    message = var12.toString();
+                    return message;
                 }
             } finally {
-                if (var4 != null) {
-                    var4.disconnect();
+                if (httpURLConnection != null) {
+                    httpURLConnection.disconnect();
                 }
 
             }
 
-            return var8;
+            return arrayByte;
         }
 
-        protected void onPostExecute(Object var1) {
-            if (var1 instanceof byte[]) {
+        protected void onPostExecute(Object object) {
+            if (object instanceof byte[]) {
                 if (GifView.this.mLoadImageCallBack != null) {
                     GifView.this.mLoadImageCallBack.loadImageSuccessed();
                 }
 
-                byte[] var2 = (byte[]) ((byte[]) var1);
-                GifView.this.b();
-                GifView.this.c = Movie.decodeByteArray(var2, 0, var2.length);
+                byte[] gifArrayByte = (byte[]) object;
+                GifView.this.refresh();
+                GifView.this.mMovie = Movie.decodeByteArray(gifArrayByte, 0, gifArrayByte.length);
                 GifView.this.requestLayout();
             }
 
