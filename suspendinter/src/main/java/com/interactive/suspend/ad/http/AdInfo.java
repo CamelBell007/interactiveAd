@@ -328,7 +328,7 @@ public class AdInfo extends BaseData {
 
         public InnerC(InnerA var1) {
             this.device_id = var1.mDeveiceUtil.a();
-            this.device_type = var1.mDeveiceUtil.f();
+            this.device_type = var1.mDeveiceUtil.getAppPlatform();
             this.os_type = var1.mDeveiceUtil.e();
             this.os_version = var1.mDeveiceUtil.d();
             this.vendor = var1.mDeveiceUtil.c();

@@ -32,82 +32,82 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
 public class DeviceUtils {
-    private String a;
-    private String b;
-    private String c;
-    private String d;
-    private String e;
-    private String f;
+    private String mAppPlatform;
+    private String mOS;
+    private String mVersionStatus;
+    private String mProduct;
+    private String mDeviceModelName;
+    private String mWidthAndHeight;
     private String g;
-    private String h;
-    private String i;
-    private String j;
-    private String k;
+    private String mHardwareSerialNumber;
+    private String mDeviceId;
+    private String mSubscriberId;
+    private String mAndroidId;
     private String l;
-    private String m;
-    private String n;
-    private String o;
+    private String mAvailableCacheMemorySize;
+    private String mAllMemorySize;
+    private String mAvailableMemorySize;
     private String p;
     private String q;
-    private int r;
-    private int s;
-    private float t;
-    private int u;
+    private int mHeightPX;
+    private int mWidthPX;
+    private float mDensity;
+    private int mDensityDpi;
 
-    public DeviceUtils(Context var1) {
-        DisplayMetrics var2 = new DisplayMetrics();
-        WindowManager var3 = (WindowManager)var1.getSystemService(Context.WINDOW_SERVICE);
-        TelephonyManager var4 = (TelephonyManager)var1.getSystemService(Context.TELEPHONY_SERVICE);
-        var3.getDefaultDisplay().getMetrics(var2);
-        this.s = var2.widthPixels;
-        this.r = var2.heightPixels;
-        this.t = var2.density;
-        this.u = var2.densityDpi;
-        if(var4 != null) {
-            if(!this.a(var1)) {
-                this.a = "手机端";
+    public DeviceUtils(Context context) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        this.mWidthPX = displayMetrics.widthPixels;
+        this.mHeightPX = displayMetrics.heightPixels;
+        this.mDensity = displayMetrics.density;
+        this.mDensityDpi = displayMetrics.densityDpi;
+        if(telephonyManager != null) {
+            if(!this.isNotPhone(context)) {
+                this.mAppPlatform = "手机端";
             } else {
-                this.a = "平板";
+                this.mAppPlatform = "平板";
             }
         }
 
-        this.b = "Android";
-        this.c = VERSION.RELEASE;
-        this.d = Build.MANUFACTURER;
-        this.e = this.s();
-        this.f = this.s + "x" + this.r;
-        this.g = this.a(var4, var1);
-        this.h = Build.SERIAL;
+        this.mOS = "Android";
+        this.mVersionStatus = VERSION.RELEASE;
+        this.mProduct = Build.MANUFACTURER;
+        this.mDeviceModelName = this.getDeviceModelName();
+        this.mWidthAndHeight = this.mWidthPX + "x" + this.mHeightPX;
+        this.g = this.a(telephonyManager, context);
+        this.mHardwareSerialNumber = Build.SERIAL;
 
         try {
-            this.i = ((TelephonyManager)var1.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-            this.j = ((TelephonyManager)var1.getSystemService(Context.TELEPHONY_SERVICE)).getSubscriberId();
-            this.k = System.getString(var1.getContentResolver(), "android_id");
+            this.mDeviceId = ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+            this.mSubscriberId = ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getSubscriberId();
+            this.mAndroidId = System.getString(context.getContentResolver(), "android_id");
         } catch (Exception var6) {
             var6.printStackTrace();
         }
 
-        this.l = this.c(var1);
-        this.m = this.b(var1);
-        this.n = (this.a(0) + this.b(0)) / 1024L / 1024L + "";
-        this.o = (this.a(1) + this.b(1)) / 1024L / 1024L + "";
+        this.l = this.c(context);
+        this.mAvailableCacheMemorySize = this.b(context);
+        this.mAllMemorySize = (this.a(0) + this.b(0)) / 1024L / 1024L + "";
+        this.mAvailableMemorySize = (this.a(1) + this.b(1)) / 1024L / 1024L + "";
         this.p = this.u() + "";
         this.q = r() + "";
     }
 
-    private boolean a(Context var1) {
+    private boolean isNotPhone(Context var1) {
         return (var1.getResources().getConfiguration().screenLayout & 15) >= 3;
     }
 
-    private String s() {
-        String var1 = Build.MODEL;
-        if(var1 != null) {
-            var1 = var1.trim().replaceAll("\\s*", "");
+    private String getDeviceModelName() {
+        String name = Build.MODEL;
+        if(name != null) {
+            name = name.trim().replaceAll("\\s*", "");
         } else {
-            var1 = "";
+            name = "";
         }
 
-        return var1;
+        return name;
     }
 
     public String a() {
@@ -115,43 +115,43 @@ public class DeviceUtils {
     }
 
     public String b() {
-        return this.f;
+        return this.mWidthAndHeight;
     }
 
     public String c() {
-        return this.d;
+        return this.mProduct;
     }
 
     public String d() {
-        return this.c;
+        return this.mVersionStatus;
     }
 
     public String e() {
-        return this.b;
+        return this.mOS;
     }
 
-    public String f() {
-        return this.a;
+    public String getAppPlatform() {
+        return this.mAppPlatform;
     }
 
     public String g() {
-        return this.e;
+        return this.mDeviceModelName;
     }
 
     public String h() {
-        return this.h;
+        return this.mHardwareSerialNumber;
     }
 
     public String i() {
-        return this.i;
+        return this.mDeviceId;
     }
 
     public String j() {
-        return this.j;
+        return this.mSubscriberId;
     }
 
     public String k() {
-        return this.k;
+        return this.mAndroidId;
     }
 
     private String a(TelephonyManager var1, Context var2) {
@@ -162,7 +162,7 @@ public class DeviceUtils {
         }
 
         String var5 = "";
-        if(CheckCallingPermission.a(var2, "android.permission.READ_PHONE_STATE")) {
+        if(CheckCallingPermission.checkPermissionGrant(var2, "android.permission.READ_PHONE_STATE")) {
             var5 = var1.getDeviceId();
         }
 
@@ -202,15 +202,15 @@ public class DeviceUtils {
     }
 
     public String m() {
-        return this.m;
+        return this.mAvailableCacheMemorySize;
     }
 
     public String n() {
-        return this.n;
+        return this.mAllMemorySize;
     }
 
     public String o() {
-        return this.o;
+        return this.mAvailableMemorySize;
     }
 
     public String p() {

@@ -27,7 +27,7 @@ public class LocationMananger {
 
     public LocationMananger(Context var1) {
         try {
-            if (CheckCallingPermission.a(var1, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (CheckCallingPermission.checkPermissionGrant(var1, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 LocationManager var2 = (LocationManager) var1.getSystemService(Context.LOCATION_SERVICE);
                 if (var2 != null && (var2.isProviderEnabled("gps") || var2.isProviderEnabled("network"))) {
                     try {
