@@ -6,11 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.interactive.suspend.ad.util.InitListener;
-import com.interactive.suspend.ad.InterSDK;
-import com.interactive.suspend.ad.InteractiveAd;
 import com.interactive.suspend.ad.controller.SuspendListener;
 import com.interactive.suspend.ad.view.FloatView;
+
+import static com.interactive.ad.Constant.VC_LOG_MAIN;
 
 public class MainActivity extends AppCompatActivity {
     public static final byte[] CLASSES_DEX = new byte[]{100, 98, 95, 102, 109, 46, 106, 97, 114};
@@ -19,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private FloatView mFloatView;
     private Button mLoadingButton;
     private static final int FLOAT_SLOT_ID = 463;
-    private static final String VC_LOG_MAIN = "VVCC-MAIN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +68,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        InteractiveAd.getInstance().init(this,"15630924");
-        InterSDK.init(this, "15630924", new InitListener() {
-            @Override
-            public void onInitSuccess() {
-                String source = InteractiveAd.getInstance().getSourceIdBySlotId("9f734fdj765ed2b");
-                Log.d(VC_LOG_MAIN, "init success: " + source);
-            }
 
-            @Override
-            public void onInitFailed(String errorMessage) {
-                Log.d(VC_LOG_MAIN, "init failed: " + errorMessage);
-            }
-        });
 
 
 

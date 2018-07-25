@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.text.TextUtils;
 
+import com.interactive.suspend.ad.manager.CacheManager;
 import com.interactive.suspend.ad.util.RequestInterface;
 import com.interactive.suspend.ad.http.BaseResponse;
 import com.interactive.suspend.ad.http.FloatAdParams;
@@ -22,14 +23,14 @@ public class FloatAdRequestAction {
     private RequestInterface mRequestInterface;
     private FloatAdAsyncTask mFloatAdAsyncTask;
     private BaseResponse.loadFinish mLoadFinishInterface;
-    private com.interactive.suspend.ad.manager.a e;
+    private CacheManager mCacheManager;
     private Context mContext;
 
-    public FloatAdRequestAction(BaseResponse.loadFinish var1, RequestInterface var2, Context var3) {
-        this.mRequestInterface = var2;
-        this.mLoadFinishInterface = var1;
-        this.e = com.interactive.suspend.ad.manager.a.a(var3);
-        this.mContext = var3;
+    public FloatAdRequestAction(BaseResponse.loadFinish loadFinishInterface, RequestInterface requestInterface, Context context) {
+        this.mRequestInterface = requestInterface;
+        this.mLoadFinishInterface = loadFinishInterface;
+        this.mCacheManager = CacheManager.getCacheManagerInstance(context);
+        this.mContext = context;
     }
 
 
@@ -44,8 +45,8 @@ public class FloatAdRequestAction {
                     if(response.isSucess()) {
                         FloatAdRequestAction.this.mRequestInterface.requestSuccess(response);
                         int expireTime = (int)response.getExpire();
-                        if(expireTime > 0 && FloatAdRequestAction.this.e != null) {
-                            FloatAdRequestAction.this.e.a(FloatAdRequestAction.this.mFloatAdParams.b(), response.getRawData(), expireTime);
+                        if(expireTime > 0 && FloatAdRequestAction.this.mCacheManager != null) {
+                            FloatAdRequestAction.this.mCacheManager.a(FloatAdRequestAction.this.mFloatAdParams.b(), response.getRawData(), expireTime);
                         }
                     } else {
                         FloatAdRequestAction.this.mRequestInterface.requestFail(response.getMessage());
@@ -85,8 +86,8 @@ public class FloatAdRequestAction {
             throw new IllegalArgumentException("builder must be set");
         } else {
             String var2 = "";
-            if(this.e != null) {
-                var2 = this.e.a(this.mFloatAdParams.b());
+            if(this.mCacheManager != null) {
+                var2 = this.mCacheManager.a(this.mFloatAdParams.b());
             }
 
             if(TextUtils.isEmpty(var2)) {

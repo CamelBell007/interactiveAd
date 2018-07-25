@@ -5,5 +5,7 @@ package com.interactive.ad;
  */
 
 public class Constant {
-    public static final String APP_ID = "";
+    public static final String APP_ID = "15630924";
+    public static final String VC_LOG_MAIN = "VVCC--    ";
+
 }

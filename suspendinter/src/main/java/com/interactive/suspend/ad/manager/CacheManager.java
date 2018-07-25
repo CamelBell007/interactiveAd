@@ -18,48 +18,48 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class a
+public class CacheManager
 {
-    private static Map<String, a> a = new HashMap();
-    private a.InnerTaskA b;
+    private static Map<String, CacheManager> mCacheManagerMap = new HashMap();
+    private CacheManager.InnerTaskA mInnerTaskA;
 
-    public static a a(Context paramContext)
+    public static CacheManager getCacheManagerInstance(Context context)
     {
-        return a(paramContext, "ACache");
+        return getCacheManagerInstance(context, "ACache");
     }
 
-    public static a a(Context paramContext, String paramString)
+    public static CacheManager getCacheManagerInstance(Context context, String cacheFileName)
     {
-        File localFile = new File(paramContext.getCacheDir(), paramString);
-        return a(localFile, 50000000L, Integer.MAX_VALUE);
+        File cacheFile = new File(context.getCacheDir(), cacheFileName);
+        return getCacheManagerInstance(cacheFile, 50000000L, Integer.MAX_VALUE);
     }
 
-    public static a a(File paramFile, long paramLong, int paramInt)
+    public static CacheManager getCacheManagerInstance(File cacheFile, long fileSize, int defaultFileNum)
     {
-        a locala = (a)a.get(paramFile.getAbsoluteFile() + a());
-        if (locala == null)
+        CacheManager cacheManager = (CacheManager) mCacheManagerMap.get(cacheFile.getAbsoluteFile() + getProcessId());
+        if (cacheManager == null)
         {
-            locala = new a(paramFile, paramLong, paramInt);
-            a.put(paramFile.getAbsolutePath() + a(), locala);
+            cacheManager = new CacheManager(cacheFile, fileSize, defaultFileNum);
+            mCacheManagerMap.put(cacheFile.getAbsolutePath() + getProcessId(), cacheManager);
         }
-        return locala;
+        return cacheManager;
     }
 
-    private static String a()
+    private static String getProcessId()
     {
         return "_" + Process.myPid();
     }
 
-    private a(File paramFile, long paramLong, int paramInt)
+    private CacheManager(File cacheFile, long defaultFileSize, int defaultFileNum)
     {
-        if ((paramFile.exists()) || (paramFile.mkdirs())) {
-            this.b = new InnerTaskA(paramFile, paramLong, paramInt);
+        if ((cacheFile.exists()) || (cacheFile.mkdirs())) {
+            this.mInnerTaskA = new InnerTaskA(cacheFile, defaultFileSize, defaultFileNum);
         }
     }
 
     public void a(String paramString1, String paramString2)
     {
-        File localFile = b.a(paramString1);
+        File localFile = mInnerTaskA.createAndRecordModify(paramString1);
         BufferedWriter localBufferedWriter = null;
         try
         {
@@ -83,7 +83,7 @@ public class a
                     localIOException4.printStackTrace();
                 }
             }
-            b.a(localFile);
+            mInnerTaskA.a(localFile);
         }
     }
 
@@ -93,7 +93,7 @@ public class a
     }
 
     public String a(String var1) {
-        File var2 = this.b.a(var1);
+        File var2 = this.mInnerTaskA.createAndRecordModify(var1);
         if(!var2.exists()) {
             return null;
         } else {
@@ -144,109 +144,109 @@ public class a
 
     public boolean b(String paramString)
     {
-        return b.c(paramString);
+        return mInnerTaskA.c(paramString);
     }
 
     public class InnerTaskA
     {
-        private final AtomicLong c;
-        private final AtomicInteger d;
-        private final long e;
-        private final int f;
-        private final Map<File, Long> g = Collections.synchronizedMap(new HashMap());
-        protected File a;
+        private final AtomicLong mFileSize;
+        private final AtomicInteger mDealFileNum;
+        private final long mDefaultFileSize;
+        private final int mDefaultFileNum;
+        private final Map<File, Long> mFileModifyMap = Collections.synchronizedMap(new HashMap());
+        protected File parentFile;
 
-        private InnerTaskA(File paramFile, long paramLong, int paramInt)
+        private InnerTaskA(File parentFile, long fileDefaultSize, int fileDefaultNum)
         {
-            this.a = paramFile;
-            this.e = paramLong;
-            this.f = paramInt;
-            this.c = new AtomicLong();
-            this.d = new AtomicInteger();
-            a();
+            this.parentFile = parentFile;
+            this.mDefaultFileSize = fileDefaultSize;
+            this.mDefaultFileNum = fileDefaultNum;
+            this.mFileSize = new AtomicLong();
+            this.mDealFileNum = new AtomicInteger();
+            taskAInit();
         }
 
-        private void a()
+        private void taskAInit()
         {
             new Thread(new Runnable()
             {
                 public void run()
                 {
-                    int var1 = 0;
-                    int var2 = 0;
-                    File[] var3 = a.listFiles();
-                    if(var3 != null) {
-                        File[] var4 = var3;
-                        int var5 = var3.length;
+                    int fileSize = 0;
+                    int dealFileNum = 0;
+                    File[] childFiles = parentFile.listFiles();
+                    if(childFiles != null) {
+                        File[] arrayFile = childFiles;
+                        int fileNum = childFiles.length;
 
-                        for(int var6 = 0; var6 < var5; ++var6) {
-                            File var7 = var4[var6];
-                            var1 = (int)((long)var1 + b.b(var7));
-                            ++var2;
-                            g.put(var7, Long.valueOf(var7.lastModified()));
+                        for(int i = 0; i < fileNum; ++i) {
+                            File file = arrayFile[i];
+                            fileSize = (int)((long)fileSize + mInnerTaskA.getFileSize(file));
+                            ++dealFileNum;
+                            mFileModifyMap.put(file, Long.valueOf(file.lastModified()));
                         }
 
-                        c.set((long)var1);
-                        d.set(var2);
+                        mFileSize.set((long)fileSize);
+                        mDealFileNum.set(dealFileNum);
                     }
 
                 }
             }).start();
         }
 
-        private void a(File paramFile)
+        private void a(File file)
         {
             long var3;
-            for(int var2 = this.d.get(); var2 + 1 > this.f; var2 = this.d.addAndGet(-1)) {
-                var3 = this.b();
-                this.c.addAndGet(-var3);
+            for(int i = this.mDealFileNum.get(); i + 1 > this.mDefaultFileNum; i = this.mDealFileNum.addAndGet(-1)) {
+                var3 = this.createFile();
+                this.mFileSize.addAndGet(-var3);
             }
 
-            this.d.addAndGet(1);
-            var3 = this.b(paramFile);
+            this.mDealFileNum.addAndGet(1);
+            var3 = this.getFileSize(file);
 
             long var7;
-            for(long var5 = this.c.get(); var5 + var3 > this.e; var5 = this.c.addAndGet(-var7)) {
-                var7 = this.b();
+            for(long var5 = this.mFileSize.get(); var5 + var3 > this.mDefaultFileSize; var5 = this.mFileSize.addAndGet(-var7)) {
+                var7 = this.createFile();
             }
 
-            this.c.addAndGet(var3);
-            Long var9 = Long.valueOf(System.currentTimeMillis());
-            paramFile.setLastModified(var9.longValue());
-            this.g.put(paramFile, var9);
+            this.mFileSize.addAndGet(var3);
+            Long modifyTime = Long.valueOf(System.currentTimeMillis());
+            file.setLastModified(modifyTime.longValue());
+            this.mFileModifyMap.put(file, modifyTime);
         }
 
-        private File a(String paramString)
+        private File createAndRecordModify(String slotId)
         {
-            File localFile = b(paramString);
+            File localFile = createFile(slotId);
             Long localLong = Long.valueOf(System.currentTimeMillis());
             localFile.setLastModified(localLong.longValue());
-            this.g.put(localFile, localLong);
+            this.mFileModifyMap.put(localFile, localLong);
 
             return localFile;
         }
 
-        private File b(String paramString)
+        private File createFile(String slotId)
         {
-            return new File(this.a, paramString.hashCode() + "");
+            return new File(this.parentFile, slotId.hashCode() + "");
         }
 
         private boolean c(String paramString)
         {
-            File localFile = a(paramString);
+            File localFile = createAndRecordModify(paramString);
             return localFile.delete();
         }
 
-        private long b()
+        private long createFile()
         {
-            if (this.g.isEmpty()) {
+            if (this.mFileModifyMap.isEmpty()) {
                 return 0L;
             }
             Long var1 = null;
             File var2 = null;
             File localFile = null;
-            Set localSet = this.g.entrySet();
-            synchronized (this.g)
+            Set localSet = this.mFileModifyMap.entrySet();
+            synchronized (this.mFileModifyMap)
             {
                 Iterator var5 = localSet.iterator();
 
@@ -268,16 +268,16 @@ public class a
                     }
                 }
             }
-            long l = b(localFile);
+            long l = getFileSize(localFile);
             if (localFile.delete()) {
-                this.g.remove(localFile);
+                this.mFileModifyMap.remove(localFile);
             }
             return l;
         }
 
-        private long b(File paramFile)
+        private long getFileSize(File file)
         {
-            return paramFile.length();
+            return file.length();
         }
     }
 
