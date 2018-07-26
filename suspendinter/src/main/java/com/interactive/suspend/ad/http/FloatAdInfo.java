@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-public class AdInfo extends BaseData {
+public class FloatAdInfo extends BaseData {
     private String adserverURL;
     private String click_url;
     private String type;
@@ -56,7 +56,7 @@ public class AdInfo extends BaseData {
     private String app_package;
     private String app_name;
 
-    private AdInfo(InnerA var1) {
+    private FloatAdInfo(InnerA var1) {
         this.adserverURL = "https://engine.lvehaisen.com/api/v1/activity/spm";
         this.sdata = "";
         this.nsdata = "";
@@ -429,8 +429,8 @@ public class AdInfo extends BaseData {
             this.f = var6.b();
         }
 
-        public AdInfo a() {
-            return new AdInfo(this);
+        public FloatAdInfo a() {
+            return new FloatAdInfo(this);
         }
     }
 }

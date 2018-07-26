@@ -1,10 +1,11 @@
-package com.interactive.suspend.ad.util;
+package com.interactive.suspend.ad.http;
 
 import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.interactive.suspend.ad.BuildConfig;
+import com.interactive.suspend.ad.util.DeviceUtil;
 
 import org.json.JSONObject;
 

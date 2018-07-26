@@ -2,7 +2,7 @@ package com.interactive.suspend.ad.task;
 
 import android.os.AsyncTask;
 
-import com.interactive.suspend.ad.http.AdInfo;
+import com.interactive.suspend.ad.http.FloatAdInfo;
 import com.interactive.suspend.ad.http.TmResponse;
 import com.interactive.suspend.ad.http.InterException;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class AdServiceUrlAsyncTask extends AsyncTask<AdInfo, Void, Object>
+public class AdServiceUrlAsyncTask extends AsyncTask<FloatAdInfo, Void, Object>
 {
     private a a;
 
@@ -23,9 +23,9 @@ public class AdServiceUrlAsyncTask extends AsyncTask<AdInfo, Void, Object>
     }
 
     @Override
-    protected Object doInBackground(AdInfo... paramVarArgs)
+    protected Object doInBackground(FloatAdInfo... paramVarArgs)
     {
-        AdInfo localc = paramVarArgs[0];
+        FloatAdInfo localc = paramVarArgs[0];
         HttpURLConnection localHttpURLConnection = null;
         String str = localc.a();
         try

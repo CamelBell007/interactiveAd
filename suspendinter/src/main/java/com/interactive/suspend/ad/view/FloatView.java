@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -13,20 +14,22 @@ import android.widget.RelativeLayout;
 
 import com.interactive.suspend.ad.InteractiveAd;
 import com.interactive.suspend.ad.R;
-import com.interactive.suspend.ad.util.RequestInterface;
 import com.interactive.suspend.ad.activity.TmActivity;
 import com.interactive.suspend.ad.controller.SuspendController;
 import com.interactive.suspend.ad.controller.SuspendListener;
-import com.interactive.suspend.ad.task.FloatAdRequestAction;
-import com.interactive.suspend.ad.task.AdServiceUrlRequestAction;
-import com.interactive.suspend.ad.http.AdInfo;
-import com.interactive.suspend.ad.http.BaseResponse;
+import com.interactive.suspend.ad.html.AdvancedNativeAd;
+import com.interactive.suspend.ad.html.INativeAd;
+import com.interactive.suspend.ad.html.INativeAdLoadListener;
 import com.interactive.suspend.ad.http.FloatAdParams;
 import com.interactive.suspend.ad.http.TmResponse;
 import com.interactive.suspend.ad.imageloader.LoadImageCallBack;
-import com.interactive.suspend.ad.util.LoadAdCallback;
 import com.interactive.suspend.ad.manager.StringUtils;
-import com.interactive.suspend.ad.manager.ThreadStackLog;
+import com.interactive.suspend.ad.task.AdServiceUrlRequestAction;
+import com.interactive.suspend.ad.task.FloatAdRequestAction;
+
+import java.util.List;
+
+import static com.interactive.suspend.ad.util.LogUtil.TAG;
 
 /**
  * Created by VC on 2018/6/28.
@@ -41,16 +44,13 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
     private AdServiceUrlRequestAction mAdServiceUrlRequestAction;
     private FloatAdParams mAdInterInfo;
     private TmResponse mAdInfo;
+    private INativeAd mFloatAd;
     private int mAdViewShapeStyle;
-    private String mAdInfoRequestIdCurrentTime;
-    private String mAdInfoDataOne;
-    private String mAdInfoDataTwo;
-    private String mAdInfoClickUrl;
-    private String mAdInfoActivityId;
-    private String mAdInfoSlotId;
     private Context mContext;
-    private boolean mIsDoUrlRequest;
     private SuspendListener mSuspendListener;
+
+    private AdvancedNativeAd mAdvancedNativeAd;
+    private static final int LOAD_AD_NUM = 1;
 
     public FloatView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -58,7 +58,6 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
 
     public FloatView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
-        this.mIsDoUrlRequest = false;
         this.mContext = context.getApplicationContext();
         this.initAttribute(context, attributeSet, defStyleAttr);
         this.initView(context);
@@ -117,16 +116,6 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
                         setVisibility(View.VISIBLE);
                     }
 
-                    if (mAdInfo != null) {
-                        mAdInfoRequestIdCurrentTime = mAdInfo.getRequest_id() + System.currentTimeMillis() + "";
-                        mAdInfoDataOne = mAdInfo.getData1();
-                        mAdInfoDataTwo = mAdInfo.getData2();
-                        mAdInfoClickUrl = mAdInfo.getClick_url();
-                        mAdInfoActivityId = mAdInfo.getActivity_id();
-                        mAdInfoSlotId = mAdInfo.getAdslot_id();
-                    }
-
-                    adServerUrlRequest(0);
                     if (mSuspendListener != null) {
                         mSuspendListener.onReceiveAd();
                         mSuspendListener.onAdExposure();
@@ -147,16 +136,6 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
                         setVisibility(View.VISIBLE);
                     }
 
-                    if (mAdInfo != null) {
-                        mAdInfoRequestIdCurrentTime = mAdInfo.getRequest_id() + System.currentTimeMillis() + "";
-                        mAdInfoDataOne = mAdInfo.getData1();
-                        mAdInfoDataTwo = mAdInfo.getData2();
-                        mAdInfoClickUrl = mAdInfo.getClick_url();
-                        mAdInfoActivityId = mAdInfo.getActivity_id();
-                        mAdInfoSlotId = mAdInfo.getAdslot_id();
-                    }
-
-                    adServerUrlRequest(0);
                     if (mSuspendListener != null) {
                         mSuspendListener.onReceiveAd();
                         mSuspendListener.onAdExposure();
@@ -176,66 +155,121 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
         this.setVisibility(View.GONE);
     }
 
-    public void loadAd(String slotId) {
-        if (this.mAdInterInfo == null) {
-//            if(StringUtils.isEmpty(slotId)){
-//                return;
-//            }
-//            String slotKey = getSlotKeyByName(slotId);
-            this.mAdInterInfo = (new FloatAdParams.a(this.mContext)).a(slotId).a();
-        }
-
-        if (!TextUtils.isEmpty(this.mAdInterInfo.b()) && !TextUtils.isEmpty(this.mAdInterInfo.a())) {
-            this.mFloatAdManager = new FloatAdRequestAction(new TmResponse.a(), new RequestInterface() {
-                public void requestSuccess(BaseResponse baseResponse) {
-                    if (baseResponse instanceof TmResponse) {
-                        mAdInfo = (TmResponse) baseResponse;
-                        String var2 = mAdInfo.getImg_url();
-                        if (!TextUtils.isEmpty(var2)) {
-                            if (var2.endsWith(".gif")) {
-                                mWebImageView.setVisibility(View.GONE);
-                                mGifView.setVisibility(View.VISIBLE);
-                                mGifView.setGifUrl(StringUtils.a(var2));
-                            } else {
-                                mWebImageView.loadSource(StringUtils.a(var2), R.drawable.default_image_background);
-                            }
-                        }
-
-                        if (mAdInfo.isAd_close_visible()) {
-                            mCloseImage.setVisibility(View.VISIBLE);
-                        } else {
-                            mCloseImage.setVisibility(View.GONE);
-                        }
-
-                        if (mAdInfo.isAd_icon_visible()) {
-                            mAdImage.setVisibility(View.VISIBLE);
-                        } else {
-                            mAdImage.setVisibility(View.GONE);
-                        }
-                    }
-
+    public void loadNativeAd(String slotId) {
+        mAdvancedNativeAd = new AdvancedNativeAd(getContext(), slotId); // use unitid with large image if you want image data
+        mAdvancedNativeAd.setAdListener(new INativeAdLoadListener() {
+            @Override
+            public void onAdListLoaded(List<INativeAd> ads) {
+                Log.e(TAG, "onAdListLoaded: size: " + ads.size()+"  onAdListLoaded: Category: "
+                        + ads.get(0).getAppCategory() + " |||||  size:" + ads.get(0).getAppSize());
+                if(ads != null&&ads.size()>0){
+                    mFloatAd = ads.get(0);
+                }
+                if (mFloatAd == null) {
+                    return;
                 }
 
-                public void requestFail(String var1) {
-                    ThreadStackLog.a().a(var1);
-                    if (mSuspendListener != null) {
+                String iconUrl = mFloatAd.getIconImageUrl();
+                if (!TextUtils.isEmpty(iconUrl)) {
+                    if (iconUrl.endsWith(".gif")) {
+                        mWebImageView.setVisibility(View.GONE);
+                        mGifView.setVisibility(View.VISIBLE);
+                        mGifView.setGifUrl(StringUtils.a(iconUrl));
+                    } else {
+                        mWebImageView.loadSource(StringUtils.a(iconUrl), R.drawable.default_image_background);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, "onError: " + error);
+                if (mSuspendListener != null) {
                         mSuspendListener.onFailedToReceiveAd();
                     }
+//
+            }
 
-                }
+            @Override
+            public void onAdClicked(INativeAd ad) {
+                Log.e(TAG, "onAdlicked: type: " + ad.getAdType() + ", title: " + ad.getTitle());
+            }
 
-                public void preExecute() {
-                    setVisibility(View.GONE);
-                }
-            }, this.mContext);
-            this.mFloatAdManager.requestAdInfo(this.mAdInterInfo);
-        } else {
-            throw new IllegalStateException("app_key or adslot_id not set");
-        }
+            @Override
+            public void onShowed() { // IMPORTANT: ONLY record show event from APX and Facebook, not include Admob
+
+            }
+        });
+
+        mAdvancedNativeAd.load(LOAD_AD_NUM);
     }
 
+    public void loadAd(String slotId) {
+        loadNativeAd(slotId);
+    }
 
-    private String getSlotKeyByName(String slotName){
+//    public void loadAd(String slotId) {
+//        loadNativeAd(slotId);
+//
+//        if (this.mAdInterInfo == null) {
+////            if(StringUtils.isEmpty(slotId)){
+////                return;
+////            }
+////            String slotKey = getSlotKeyByName(slotId);
+//            this.mAdInterInfo = (new FloatAdParams.a(this.mContext)).a(slotId).a();
+//        }
+//
+//        if (!TextUtils.isEmpty(this.mAdInterInfo.b()) && !TextUtils.isEmpty(this.mAdInterInfo.a())) {
+//            this.mFloatAdManager = new FloatAdRequestAction(new TmResponse.a(), new RequestInterface() {
+//                public void requestSuccess(BaseResponse baseResponse) {
+//                    if (baseResponse instanceof TmResponse) {
+//                        mAdInfo = (TmResponse) baseResponse;
+//                        String var2 = mAdInfo.getImg_url();
+//                        if (!TextUtils.isEmpty(var2)) {
+//                            if (var2.endsWith(".gif")) {
+//                                mWebImageView.setVisibility(View.GONE);
+//                                mGifView.setVisibility(View.VISIBLE);
+//                                mGifView.setGifUrl(StringUtils.a(var2));
+//                            } else {
+//                                mWebImageView.loadSource(StringUtils.a(var2), R.drawable.default_image_background);
+//                            }
+//                        }
+//
+//                        if (mAdInfo.isAd_close_visible()) {
+//                            mCloseImage.setVisibility(View.VISIBLE);
+//                        } else {
+//                            mCloseImage.setVisibility(View.GONE);
+//                        }
+//
+//                        if (mAdInfo.isAd_icon_visible()) {
+//                            mAdImage.setVisibility(View.VISIBLE);
+//                        } else {
+//                            mAdImage.setVisibility(View.GONE);
+//                        }
+//                    }
+//
+//                }
+//
+//                public void requestFail(String var1) {
+//                    ThreadStackLog.a().a(var1);
+//                    if (mSuspendListener != null) {
+//                        mSuspendListener.onFailedToReceiveAd();
+//                    }
+//
+//                }
+//
+//                public void preExecute() {
+//                    setVisibility(View.GONE);
+//                }
+//            }, this.mContext);
+//            this.mFloatAdManager.requestAdInfo(this.mAdInterInfo);
+//        } else {
+//            throw new IllegalStateException("app_key or adslot_id not set");
+//        }
+//    }
+
+
+    private String getSlotKeyByName(String slotName) {
         String slotKey = InteractiveAd.getInstance().getSourceIdBySlotId(slotName);
         return slotKey;
     }
@@ -276,33 +310,8 @@ public class FloatView extends RelativeLayout implements View.OnClickListener, S
             if (this.mSuspendListener != null) {
                 this.mSuspendListener.onAdClick();
             }
-
-            TmActivity.jumptoShowActivity(this.getContext(), StringUtils.a(this.mAdInfo.getClick_url()));
-            if (!this.mIsDoUrlRequest) {
-                this.adServerUrlRequest(1);
-                this.mIsDoUrlRequest = true;
-            }
+            TmActivity.jumptoShowActivity(this.getContext(), StringUtils.a(this.mFloatAd.getClickUrl()));
         }
-
-    }
-
-    private void adServerUrlRequest(int var1) {
-        AdInfo var2 =
-                (new AdInfo.InnerA(this.mContext)).b(String.valueOf(var1))
-                        .d(this.mAdInfoDataOne).e(this.mAdInfoDataTwo).a(this.mAdInfoSlotId)
-                        .f(this.mAdInfoClickUrl).g(this.mAdInfoActivityId).c(this.mAdInfoRequestIdCurrentTime)
-                        .a();
-        if (this.mAdServiceUrlRequestAction == null) {
-            this.mAdServiceUrlRequestAction = new AdServiceUrlRequestAction(new TmResponse.a(), new LoadAdCallback() {
-                public void loadSuccess() {
-                }
-
-                public void loadFail(String var1) {
-                }
-            }, this.mContext);
-        }
-
-        this.mAdServiceUrlRequestAction.a(var2);
     }
 }
 

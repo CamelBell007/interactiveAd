@@ -126,23 +126,23 @@ public class FloatAdParams extends LocationMananger {
         private String mSlotKey;
         private String g;
         private int h = 0;
-        private DeviceUtils mDeviceUtil;
-        private DeviceUtil j;
-        private LocationMananger k;
+        private DeviceUtils mDeviceUtils;
+        private DeviceUtil mDeviceUtil;
+        private LocationMananger mLocationManager;
 
         public FloatAdParams.a a(String slotKey) {
             this.mSlotKey = String.valueOf(slotKey);
-            this.a = this.mDeviceUtil.a() + this.mSlotKey + System.currentTimeMillis() + k.a();
+            this.a = this.mDeviceUtil.a() + this.mSlotKey + System.currentTimeMillis() + mLocationManager.a();
             return this;
         }
 
         public a(Context var1) {
-            this.mDeviceUtil = new DeviceUtils(var1);
-            this.k = new LocationMananger(var1);
-            this.j = new DeviceUtil(var1);
+            this.mDeviceUtils = new DeviceUtils(var1);
+            this.mLocationManager = new LocationMananger(var1);
+            this.mDeviceUtil = new DeviceUtil(var1);
             this.e = var1.getPackageName();
             PackageManager var2 = var1.getPackageManager();
-            if(this.j.a(var1) == 1) {
+            if(this.mDeviceUtil.a(var1) == 1) {
                 this.h = 0;
             } else {
                 this.h = 1;

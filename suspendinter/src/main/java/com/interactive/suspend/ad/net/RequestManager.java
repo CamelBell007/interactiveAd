@@ -7,7 +7,7 @@ import com.interactive.suspend.ad.constant.AdConstants;
 import com.interactive.suspend.ad.model.AdConfigBean;
 import com.interactive.suspend.ad.model.BeanParser;
 import com.interactive.suspend.ad.util.AES;
-import com.interactive.suspend.ad.util.UrlUtils;
+import com.interactive.suspend.ad.http.UrlUtils;
 
 import org.json.JSONObject;
 

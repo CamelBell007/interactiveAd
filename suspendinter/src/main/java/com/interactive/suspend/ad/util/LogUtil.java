@@ -1,14 +1,18 @@
 package com.interactive.suspend.ad.util;
 
+import android.os.Environment;
 import android.util.Log;
+
+import java.io.File;
 
 public class LogUtil
 {
-  private static final String TAG = "TD_JAVA";
+  public static final String TAG = "VVCC--";
   public static final boolean DEV = false;
   public static boolean D = false;
   public static boolean I = false;
   public static boolean E = false;
+  private static boolean existDebugFile = false;
   
   public static void info(boolean paramBoolean)
   {
@@ -92,4 +96,21 @@ public class LogUtil
   {
     Log.i("TD_JAVA", paramString);
   }
+
+  public static boolean isDebugMode() {
+    if (existDebugFile) {
+      return true;
+    }
+    try {
+      File file = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "test.debug");
+      if (file.exists()) {
+        existDebugFile = true;
+        return true;
+      }
+    } catch (Throwable e) {
+      Log.e(LogUtil.TAG,e.getMessage());
+    }
+    return false;
+  }
+
 }

@@ -10,7 +10,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.interactive.suspend.ad.util.LoadAdCallback;
-import com.interactive.suspend.ad.http.AdInfo;
+import com.interactive.suspend.ad.http.FloatAdInfo;
 import com.interactive.suspend.ad.http.BaseResponse;
 import com.interactive.suspend.ad.http.ErrorReportData;
 import com.interactive.suspend.ad.http.InterException;
@@ -20,7 +20,7 @@ import com.interactive.suspend.ad.manager.StringUtils;
 import com.interactive.suspend.ad.manager.ThreadStackLog;
 
 public class AdServiceUrlRequestAction {
-    private AdInfo a;
+    private FloatAdInfo a;
     private LoadAdCallback mLoadAdCallback;
     private AdServiceUrlAsyncTask c;
     private BaseResponse.loadFinish d;
@@ -37,7 +37,7 @@ public class AdServiceUrlRequestAction {
         this.h = new ErrorReportData(var3);
     }
 
-    public void a(AdInfo var1) {
+    public void a(FloatAdInfo var1) {
         this.a = var1;
         if(this.a == null) {
             ThreadStackLog.a().a("request is null");
@@ -49,7 +49,7 @@ public class AdServiceUrlRequestAction {
         } else {
             this.c = new AdServiceUrlAsyncTask();
             this.c.a(this.c());
-            this.c.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new AdInfo[]{this.a});
+            this.c.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new FloatAdInfo[]{this.a});
         }
     }
 
