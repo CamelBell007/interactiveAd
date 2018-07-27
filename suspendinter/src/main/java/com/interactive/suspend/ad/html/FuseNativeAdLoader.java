@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.interactive.suspend.ad.constant.Constants;
+import com.interactive.suspend.ad.model.FetchAppConfigResult;
 import com.interactive.suspend.ad.util.LogUtil;
 
 import java.util.ArrayList;
@@ -159,6 +160,8 @@ public class FuseNativeAdLoader implements IAdvancedNativeAd {
         }
         return new ApxNativeAdapter(mContext, config.key, config.nativeUnit);
     }
+
+
 
     @Override
     public void destroy() {

@@ -59,6 +59,16 @@ public class Constants
     public static final String AD_SOURCE_APX_CONTENT = "apx_content";
   }
 
+  public static final class RefMode {
+    public static final int SEND_ALL = 0; // send all refers
+    public static final int SEND_FAST = 1; // send the fastest one
+  }
+
+  public static final class AdNetworks {
+    public static final String APX = NativeAdSource.AD_SOURCE_APX;
+    public static final String APX_H5 = "apx_h5";
+  }
+
   public static class Preference {
     public static final String PREF_NAME = "sdk_preference";
     public static final String USER_AGENT = "user_agent";

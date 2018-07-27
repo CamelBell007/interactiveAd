@@ -1,4 +1,4 @@
-package com.interactive.suspend.ad.html;
+package com.interactive.suspend.ad.model;
 
 import com.google.gson.annotations.SerializedName;
 

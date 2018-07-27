@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.interactive.suspend.ad.constant.Constants;
+import com.interactive.suspend.ad.constant.Platform;
+import com.interactive.suspend.ad.model.AppConfig;
+import com.interactive.suspend.ad.model.FetchAppConfigResult;
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ public class AdvancedNativeAd implements IAdvancedNativeAd {
     private String mUnitId;
     private Context mContext;
     private INativeAdLoadListener mINativeAdLoadListener;
-//    private FetchAppConfigResult.NativeUnit mNativeUnit;
+    private FetchAppConfigResult.NativeUnit mNativeUnit;
     private FuseNativeAdLoader mFuseNativeAdLoader;
 
     public AdvancedNativeAd(Context context, String unitId) {
@@ -29,20 +32,20 @@ public class AdvancedNativeAd implements IAdvancedNativeAd {
 
     private void init() {
         Log.d(TAG, "init");
-//        mNativeUnit = AppConfig.getInstance(mContext.getApplicationContext()).getNativeAdUnit(mUnitId);
-//        long adValidTime = AppConfig.getInstance(mContext).getAdValidTime();
-//        if (mNativeUnit != null && mNativeUnit.adNetworks != null && mNativeUnit.adNetworks.size() != 0) {
-//            for (FetchAppConfigResult.AdNetwork adNetwork : mNativeUnit.adNetworks) {
-//                Log.e("platform: " + adNetwork.platform ,", key: " + adNetwork.key);
-//                if (adNetwork.platform.equals(Platform.INTER_AD)) {
-//                    mFuseNativeAdLoader.addNativeAdSource(adNetwork.platform, adNetwork.key, adValidTime, mNativeUnit);
-//                } else {
-//                    mFuseNativeAdLoader.addNativeAdSource(adNetwork.platform, adNetwork.key, adValidTime);
-//                }
-//            }
-//        } else {
-//            Log.e("","No native config!");
-//        }
+        mNativeUnit = AppConfig.getInstance(mContext.getApplicationContext()).getNativeAdUnit(mUnitId);
+        long adValidTime = AppConfig.getInstance(mContext).getAdValidTime();
+        if (mNativeUnit != null && mNativeUnit.adNetworks != null && mNativeUnit.adNetworks.size() != 0) {
+            for (FetchAppConfigResult.AdNetwork adNetwork : mNativeUnit.adNetworks) {
+                Log.e("platform: " + adNetwork.platform ,", key: " + adNetwork.key);
+                if (adNetwork.platform.equals(Platform.INTER_AD)) {
+                    mFuseNativeAdLoader.addNativeAdSource(adNetwork.platform, adNetwork.key, adValidTime, mNativeUnit);
+                } else {
+                    mFuseNativeAdLoader.addNativeAdSource(adNetwork.platform, adNetwork.key, adValidTime);
+                }
+            }
+        } else {
+            Log.e("","No native config!");
+        }
     }
 
     @Override

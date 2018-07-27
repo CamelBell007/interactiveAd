@@ -18,6 +18,8 @@ import com.interactive.suspend.ad.R;
 import com.interactive.suspend.ad.util.TargetClassManager;
 import com.interactive.suspend.ad.view.BrowserLayout;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class TmActivity extends Activity {
     private String mBundleKeyURL = null;
     private boolean mBundleKeyShowButtonBar = true;
@@ -54,7 +56,7 @@ public class TmActivity extends Activity {
     public static void jumptoShowActivity(Context context, String keyUrl) {
         if(!TextUtils.isEmpty(keyUrl)) {
             Intent intent = new Intent(context, TmActivity.class);
-            intent.addFlags(268435456);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("BUNDLE_KEY_URL", keyUrl);
             intent.putExtra("BUNDLE_KEY_SHOW_BOTTOM_BAR", true);
             context.startActivity(intent);

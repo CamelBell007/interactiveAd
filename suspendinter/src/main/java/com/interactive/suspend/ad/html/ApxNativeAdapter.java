@@ -7,14 +7,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.interactive.suspend.ad.R;
 import com.interactive.suspend.ad.constant.Constants;
+import com.interactive.suspend.ad.model.FetchAppConfigResult;
 import com.interactive.suspend.ad.util.ApplicationUtil;
 import com.interactive.suspend.ad.util.LogUtil;
 import com.interactive.suspend.ad.util.RecordUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.interactive.suspend.ad.R;
 
 
 /**
@@ -30,9 +32,6 @@ public class ApxNativeAdapter extends NativeAd implements IAdvancedNativeAd{
     private SubscribeAdInfo mSubscribeAdInfo;
     private long mJumpStartTime = 0;
     private long mJumpEndTime = 0;
-    private boolean mIsPbshowing = false;
-    private boolean mJumpShareGP = false;
-    private AdInfo mCurJumpAd;
     private View mAdContent;
     private FetchAppConfigResult.NativeUnit mNativeUnit;
     private List<AdInfo> mShowedAds = new ArrayList<>();
@@ -249,6 +248,8 @@ public class ApxNativeAdapter extends NativeAd implements IAdvancedNativeAd{
 
     @Override
     public void registerViewForInteraction(final View view) {
+        super.registerViewForInteraction(view);
+
         String campaignid = "";
         if (mIsLoadSubscsribeAd) {
             if (mSubscribeAdInfo != null) {
@@ -264,7 +265,6 @@ public class ApxNativeAdapter extends NativeAd implements IAdvancedNativeAd{
             return;
         }
 
-        super.registerViewForInteraction(view);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -305,9 +305,9 @@ public class ApxNativeAdapter extends NativeAd implements IAdvancedNativeAd{
                 if (mIsLoadSubscsribeAd) {
                     ApplicationUtil.jumpToWebSite(mContext, mSubscribeAdInfo, mKey);
                 } else {
-                    if (!mIsPbshowing) {
-//                        jumpToMarket(mRawAd);
-                    }
+//                    if (!mIsPbshowing) {
+////                        jumpToMarket(mRawAd);
+//                    }
                 }
             }
         });

@@ -2,8 +2,11 @@ package com.interactive.suspend.ad;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.interactive.suspend.ad.constant.AdConstants;
+import com.interactive.suspend.ad.html.IAdSdkListener;
+import com.interactive.suspend.ad.manager.ConfigLoader;
 import com.interactive.suspend.ad.model.AdConfigBean;
 import com.interactive.suspend.ad.model.ApxAdConfigBean;
 import com.interactive.suspend.ad.net.ApxConfigRequestManager;
@@ -63,6 +66,18 @@ public class InteractiveAd {
                 loadConfig(mContext, url);
             }
         }).start();
+
+        new ConfigLoader(context.getApplicationContext(), appId, new IAdSdkListener() {
+            @Override
+            public void onInitSuccess() {
+                Log.e(TAG, "onInitSuccess");
+            }
+
+            @Override
+            public void onInitFailed(String msg) {
+                Log.e(TAG, "onInitFailed");
+            }
+        }).loadAppConfig();
 
     }
 
