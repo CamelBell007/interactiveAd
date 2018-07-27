@@ -3,8 +3,6 @@ package com.interactive.suspend.ad.util;
 import android.content.Context;
 
 import com.interactive.suspend.ad.constant.Constants;
-import com.interactive.suspend.ad.html.AdInfo;
-import com.interactive.suspend.ad.html.SubscribeAdInfo;
 
 import java.util.List;
 import java.util.UUID;

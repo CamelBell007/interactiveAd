@@ -1,5 +1,7 @@
 package com.interactive.suspend.ad.constant;
 
+import android.app.AlarmManager;
+
 import com.interactive.suspend.ad.BuildConfig;
 import com.interactive.suspend.ad.util.LogUtil;
 
@@ -67,6 +69,31 @@ public class Constants
   public static final class AdNetworks {
     public static final String APX = NativeAdSource.AD_SOURCE_APX;
     public static final String APX_H5 = "apx_h5";
+  }
+
+  public static final class ActivityAd {
+    public static final int AD_PAGE_TYPE_FEATURED = 1;
+    public static final int AD_PAGE_TYPE_PRACTICAL = 2;
+    public static final int AD_PAGE_TYPE_APPS = 3;
+    public static final int SORT_ALL = 1;
+    public static final int SORT_APP = 2;
+    public static final int SORT_PRACTICAL = 3;
+    public static final String SHOW_TYPE_PURELIST_VIEW = "purelist";
+    public static final String SHOW_TYPE_LISTVIEW_WITH_HEADER = "headerlist";
+    public static final String COLOR_DIVIDER = "#e8e8ea";
+    public static final String COLOR_BACKGROUNG = "#fffdfc";
+    public static final String COLOR_GREEN_TEXT = "#09BE16";
+    public static final String TEXT_LOADING = "Keep Calm And Loading";
+    public static final String TOAST_FAILED = "Loading failed, please check your internet connection";
+    public static final String TOAST_TIMEOUT = "Loading timeout, please check your internet connection";
+    public static final String TOAST_NETWORK_UNAVALIABLE = "Network unavailable";
+    public static long PRECLICK_VALID_PERIOD = AlarmManager.INTERVAL_DAY;
+  }
+
+  public static final class AdRequestType {
+    public static final int DISPLAY = 1;
+    public static final int PRECLICK = 2;
+    public static final int HIJACK = 3;
   }
 
   public static class Preference {

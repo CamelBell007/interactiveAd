@@ -267,5 +267,13 @@ public class PreferenceUtils {
         }
         return uuid;
     }
+    public static List<String> getTabFilter(Context context) {
+        List<String> filters = new ArrayList<>();
+        final SharedPreferences sp = context.getSharedPreferences(Constants.Preference.PREF_NAME,
+                Context.MODE_PRIVATE);
+        String tabFilter = sp.getString(Constants.Preference.TABFILTER, Constants.Preference.DEFAULT_TABFILTER);
+        filters.addAll(Arrays.asList(tabFilter.split("\\|")));
+        return filters;
+    }
 
 }

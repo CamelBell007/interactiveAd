@@ -7,7 +7,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.interactive.suspend.ad.R;
 import com.interactive.suspend.ad.constant.Constants;
+import com.interactive.suspend.ad.db.AdInfo;
+import com.interactive.suspend.ad.db.SubscribeAdInfo;
 import com.interactive.suspend.ad.model.FetchAppConfigResult;
 import com.interactive.suspend.ad.util.ApplicationUtil;
 import com.interactive.suspend.ad.util.LogUtil;
@@ -15,8 +18,6 @@ import com.interactive.suspend.ad.util.RecordUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.interactive.suspend.ad.R;
 
 
 /**

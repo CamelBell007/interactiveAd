@@ -14,10 +14,10 @@ public class NativeLoader implements NativeLoaderInterface {
     private static NativeLoaderInterface sInstance;
 
     public static NativeLoaderInterface newInstance(Context ctx, int nativeSubType, boolean videoAllow) {
-//        NativeInterface nativeInterface = SdkLoader.getInstance(ctx).newNtInterface();
-//        if (nativeInterface != null) {
-//            return nativeInterface.getNativeLoader(ctx, nativeSubType, videoAllow);
-//        }
+        NativeInterface nativeInterface = SdkLoader.getInstance(ctx).newNtInterface();
+        if (nativeInterface != null) {
+            return nativeInterface.getNativeLoader(ctx, nativeSubType, videoAllow);
+        }
         return null;
     }
 

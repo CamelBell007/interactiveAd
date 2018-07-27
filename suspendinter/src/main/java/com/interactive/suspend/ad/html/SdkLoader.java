@@ -62,23 +62,9 @@ public class SdkLoader {
         return null;
     }
 
-
     public NativeInterface newNtInterface() {
         //FIXME 改为正常类的引用
-//        try {
-//            Class<?> preloader = mDexClassLoader.loadClass(Constants.Update.NATIVE_INTERFACE);
-//            Method getInstance = preloader.getDeclaredMethod("getInstance");
-//            return (NativeInterface) getInstance.invoke(preloader);
-//        } catch (ClassNotFoundException e) {
-//            Log.e(LogUtil.TAG,e.getMessage());
-//        }  catch (IllegalAccessException e) {
-//            Log.e(LogUtil.TAG,e.getMessage());
-//        } catch (NoSuchMethodException e) {
-//            Log.e(LogUtil.TAG,e.getMessage());
-//        } catch (InvocationTargetException e) {
-//            Log.e(LogUtil.TAG,e.getMessage());
-//        }
-        return null;
+        return NtInterface.getInstance();
     }
 
     public Object newObject(String name, Object... params) {

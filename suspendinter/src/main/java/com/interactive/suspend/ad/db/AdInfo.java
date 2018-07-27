@@ -1,6 +1,10 @@
-package com.interactive.suspend.ad.html;
+package com.interactive.suspend.ad.db;
+
+import com.interactive.suspend.ad.html.FetchAdResult;
+import com.interactive.suspend.ad.html.GPEncode;
 
 import java.io.Serializable;
+
 
 /**
  * Created by csc on 15/11/4.

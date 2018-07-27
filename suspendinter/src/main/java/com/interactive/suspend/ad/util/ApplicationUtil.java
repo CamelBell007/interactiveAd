@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -14,8 +15,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.interactive.suspend.ad.constant.Constants;
-import com.interactive.suspend.ad.html.AdInfo;
-import com.interactive.suspend.ad.html.SubscribeAdInfo;
+import com.interactive.suspend.ad.db.AdInfo;
+import com.interactive.suspend.ad.db.SubscribeAdInfo;
 import com.interactive.suspend.ad.task.AdReportTrueClickTask;
 
 import java.io.File;
@@ -216,5 +217,36 @@ public class ApplicationUtil {
         String noticeUrl = info.noticeUrl + "&replace_src=" + sourceid;
         new AdReportTrueClickTask(context, noticeUrl, 0, true, info.campaignid, "unknown", -1,
                 PreferenceUtils.getNativeSourceId(context.getApplicationContext())).execute();
+    }
+
+
+    public static String getCoreSourceIdType(Context context) {
+        String coreid = PreferenceUtils.getCoreSourceId(context);
+        if (TextUtils.isEmpty(coreid) || coreid.equals(PreferenceUtils.getMarketSourceId(context))) {
+            return Constants.ApxAdType.APPWALL;
+        } else if (coreid.equals(PreferenceUtils.getNativeSourceId(context))) {
+            return Constants.ApxAdType.NATIVE;
+        } else if (coreid.equals(PreferenceUtils.getRewardVideoSourceId(context))) {
+            return Constants.ApxAdType.REWARD;
+        } else if (coreid.equals(PreferenceUtils.getPlayableSourceId(context))) {
+            return Constants.ApxAdType.PLAYABLE;
+        } else if (coreid.equals(PreferenceUtils.getSmartSourceId(context))) {
+            return Constants.ApxAdType.SMART;
+        } else {
+            return Constants.ApxAdType.UNKOWN;
+        }
+    }
+
+    public static boolean isAppInstalled(Context context, String packageName) {
+        return getLaunchIntentForPackage(context, packageName) != null;
+    }
+
+    public static Intent getLaunchIntentForPackage(Context context, String packageName) {
+        try {
+            return context.getApplicationContext().getPackageManager().getLaunchIntentForPackage(packageName);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

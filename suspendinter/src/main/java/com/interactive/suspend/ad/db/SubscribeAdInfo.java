@@ -1,4 +1,6 @@
-package com.interactive.suspend.ad.html;
+package com.interactive.suspend.ad.db;
+
+import com.interactive.suspend.ad.html.FetchSubscribeAdResult;
 
 import java.io.Serializable;
 

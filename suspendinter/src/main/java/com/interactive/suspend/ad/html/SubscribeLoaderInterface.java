@@ -1,5 +1,7 @@
 package com.interactive.suspend.ad.html;
 
+import com.interactive.suspend.ad.db.SubscribeAdInfo;
+
 /**
  * Created by guojia on 2016/10/20.
  */
