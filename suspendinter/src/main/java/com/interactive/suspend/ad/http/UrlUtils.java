@@ -2,12 +2,17 @@ package com.interactive.suspend.ad.http;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.interactive.suspend.ad.BuildConfig;
 import com.interactive.suspend.ad.util.DeviceUtil;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by drason on 2018/7/20.
@@ -71,4 +76,22 @@ public class UrlUtils {
         }
         return "&file_ver=" + fileVersion;
     }
+
+
+    public static String appendReportParams(String url, @NonNull HashMap<String, String> params) {
+        if (url == null) throw new IllegalArgumentException("url incorrect!!");
+        if (params == null || params.size() == 0) return url;
+        StringBuilder sb = new StringBuilder(url);
+        Set<Map.Entry<String, String>> entries = params.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
+                sb.append(String.format("%s=%s",key,value));
+            }
+        }
+        return sb.toString();
+    }
+
+
 }
